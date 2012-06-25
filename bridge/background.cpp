@@ -19,8 +19,32 @@ void background::pilar()
 
 void archDown()
 {
-    glRotatef(90,0,1,0);
-    glutSolidTorus(5,350,100,100);
+    //glRotatef(90,0,1,0);
+    //glutSolidTorus(5,350,100,100);
+    double theta=0;
+    double circleTheta=0;
+    double pi=M_PI;
+
+
+    glScalef(1,125,5.5);
+
+
+    {
+        for (circleTheta=0; circleTheta<=2.0*pi; circleTheta+=0.05) {
+            //glVertex3f(10*cos(circleTheta),0,1/3.0*sin(circleTheta));
+            glPushMatrix();{
+                glTranslatef(5.0*cos(circleTheta),0,5*1/5.5*sin(circleTheta));
+                glBegin(GL_LINE_STRIP); {
+                    for (theta=-pi; theta<=pi; theta+=0.05) {
+                        glNormal3f(1,0,0);
+                        glVertex3f(0,theta,20*cos(theta));
+                    }
+                }
+                glEnd();
+            }glPopMatrix();
+        }
+    }
+
 }
 
 
@@ -32,21 +56,26 @@ void archUp()
 
 
     glScalef(1,100,3);
+
     {
-        for (circleTheta=0; circleTheta<=2.0*pi; circleTheta+=0.01) {
+        for (circleTheta=0; circleTheta<=2.0*pi; circleTheta+=0.05) {
             //glVertex3f(10*cos(circleTheta),0,1/3.0*sin(circleTheta));
             glPushMatrix();{
                 glTranslatef(5.0*cos(circleTheta),0,5*1/3.0*sin(circleTheta));
                 glBegin(GL_LINE_STRIP); {
                     for (theta=-pi; theta<=pi; theta+=0.05) {
-                        double numc=M_2_PI/0.01;
-                        double numt=M_2_PI/0.01;
-                        double t=circleTheta;
-                        double s=theta;
-                        double x = cos(t*M_2_PI/numt) * cos(s*M_2_PI/numc);
-                        double z = sin(t*M_2_PI/numt) * cos(s*M_2_PI/numc);
-                        double y = sin(s*M_2_PI/numc);
-                        glNormal3f(x,y,z);
+//                        double numc=M_2_PI/0.05;
+//                        double numt=M_2_PI/0.05;
+//                        double s=circleTheta;
+//                        double t=theta;
+//                        double x = cos(t*M_2_PI/numt) * cos(s*M_2_PI/numc);
+//                        double z = sin(t*M_2_PI/numt) * cos(s*M_2_PI/numc);
+//                        double y = sin(s*M_2_PI/numc);
+//                        glPushMatrix();{
+//                            glScalef(1,1,1);
+//                            glNormal3f(x,y,z);
+//                        }glPopMatrix();
+                        glNormal3f(1,0,0);
                         glVertex3f(0,theta,20*cos(theta));
                     }
                 }
@@ -86,14 +115,16 @@ void background::draw()
 
         //arch down side1
         glPushMatrix();{
-            glTranslatef(20,0,-200);
+            //glTranslatef(20,0,-300);
             //archDown();
+            glTranslatef(20,0,80);
+            archDown();
         }glPopMatrix();
 
         //arch down side2
         glPushMatrix();{
-            glTranslatef(-20,0,-200);
-            //archDown();
+            glTranslatef(-20,0,80);
+            archDown();
         }glPopMatrix();
 
         //arch up side1
