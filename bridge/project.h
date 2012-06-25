@@ -8,12 +8,16 @@
 #include "point.h"
 #include "angle.h"
 
+#include "background.h"
+
 using namespace std;
 
 class project
 {
 public:
     project();
+
+    background bg;
 
 
     double cameraAngle;			//in radian

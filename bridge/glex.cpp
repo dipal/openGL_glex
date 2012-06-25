@@ -5,6 +5,7 @@ glex::glex()
 {
 }
 
+
 project model;
 
 void enlighten(GLenum light,GLfloat color[], GLfloat pos[]) {

@@ -2,12 +2,16 @@
 
 project::project()
 {
-    pos = point(200,0,50);
-    look = point(0,0,0);
+    bg = background(point(0,0,0));
+
+    pos = point(700,0,100);
+    look = point(0,0,100);
     headDir = point(0,0,1);
     ang = angle(0,0,0);
     moveSpeed = 5;
     rotateSpeed=2;
+
+
 }
 
 void project::init() {
@@ -82,6 +86,8 @@ void project::draw() {
 
     }
     glPopMatrix();
+
+    bg.draw();
 
 
 }

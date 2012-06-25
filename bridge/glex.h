@@ -8,7 +8,6 @@
 #include <GL/glut.h>
 
 #include <QSize>
-#include "size.h"
 #include "point.h"
 #include "project.h"
 
@@ -38,7 +37,6 @@ void keyboardListener(unsigned char key, int x,int y);
 void specialKeyListener(int key, int x,int y);
 void mouseListener(int button, int state, int x, int y);
 void projectInit();
-
 
 
 #endif // GLEX_H
