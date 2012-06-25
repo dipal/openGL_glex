@@ -6,14 +6,18 @@ HEADERS +=  glex.h \
     project.h \
     angle.h \
     imageloader.h \
-    background.h
+    background.h \
+    shapeinterface.h \
+    multishape.h
 
 SOURCES +=  main.cpp\
             glex.cpp \
     project.cpp \
     angle.cpp \
     imageloader.cpp \
-    background.cpp
+    background.cpp \
+    shapeinterface.cpp \
+    multishape.cpp
 
 LIBS    +=  -L/usr/lib -lglut \
             -L/usr/lib -lGL \
