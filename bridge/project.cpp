@@ -2,7 +2,7 @@
 
 project::project()
 {
-    bg = background(point(0,0,0));
+    //bg = background(point(0,0,0));
 
     pos = point(700,0,100);
     look = point(0,0,100);
@@ -12,6 +12,7 @@ project::project()
     rotateSpeed=2;
 
 
+    shapes.addShape(new background());
 }
 
 void project::init() {
@@ -53,7 +54,7 @@ void project::init() {
     cameraHeight = 70;
     cameraRadius = 150;
 
-
+    shapes.init();
 
 }
 
@@ -87,7 +88,7 @@ void project::draw() {
     }
     glPopMatrix();
 
-    bg.draw();
+    shapes.draw();
 
 
 }
@@ -116,6 +117,7 @@ void project::rotateZAxis(bool dir){
 
 void project::keyboardListener(unsigned char key, int x,int y) {
 
+    shapes.keyboardListener(key,x,y);
 
     switch(key){
 
@@ -192,6 +194,8 @@ void project::moveZAxis(bool dir) {
 void project::specialKeyListener(int key, int x,int y) {
     //solarSystem.specialKeyListener(key,x,y);
 
+    shapes.specialKeyListener(key,x,y);
+
     switch(key){
     case GLUT_KEY_DOWN:		//down arrow key
         moveYAxis(1);
@@ -228,6 +232,7 @@ void project::specialKeyListener(int key, int x,int y) {
 
 void project::mouseListener(int button, int state, int x, int y) {
 
+    shapes.mouseListener(button,state,x,y);
 
     switch(button){
     case GLUT_LEFT_BUTTON:

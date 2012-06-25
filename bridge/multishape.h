@@ -4,15 +4,22 @@
 #include "shapeinterface.h"
 #include <vector>
 
+using namespace std;
+
 class MultiShape : public ShapeInterface
 {
     vector<ShapeInterface*> shapes;
 public:
     MultiShape();
-    void addShape();
-    void draw() {
-        for(size_t i = 0; i < shapes.size(); i++) shapes[i]->draw();
-    }
+    void addShape(ShapeInterface* shape) ;
+
+    void init();
+    void animate();
+    void draw();
+    void keyboardListener(unsigned char key, int x,int y);
+    void specialKeyListener(int key, int x,int y);
+    void mouseListener(int button, int state, int x, int y);
+
 };
 
 #endif // MULTISHAPE_H

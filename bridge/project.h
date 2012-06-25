@@ -7,6 +7,7 @@
 
 #include "point.h"
 #include "angle.h"
+#include "multishape.h"
 
 #include "background.h"
 
@@ -17,8 +18,8 @@ class project
 public:
     project();
 
-    background bg;
-
+    //background bg;
+    MultiShape shapes;
 
     double cameraAngle;			//in radian
     double cameraAngleDelta;

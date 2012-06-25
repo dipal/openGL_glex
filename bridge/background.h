@@ -4,8 +4,9 @@
 #include <GL/glut.h>
 
 #include "point.h"
+#include "shapeinterface.h"
 
-class background
+class background : public ShapeInterface
 {
 public:
 
