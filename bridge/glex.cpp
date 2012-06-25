@@ -73,7 +73,7 @@ void init(int       argc,
           char      **argv,
           uint      displayMode,
           point     initPos,
-          size      initSize,
+          QSize      initSize,
           string    windowTitle
           )
 {
@@ -81,7 +81,7 @@ void init(int       argc,
     //Simple buffer
     glutInitDisplayMode(displayMode);
     glutInitWindowPosition(initPos.x,initPos.y);
-    glutInitWindowSize(initSize.getWidth(),initSize.getHeight());
+    glutInitWindowSize(initSize.height(),initSize.width());
     glutCreateWindow(windowTitle.c_str());
     initRendering();
 

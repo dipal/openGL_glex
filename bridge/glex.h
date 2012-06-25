@@ -3,14 +3,14 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <math.h>
 
 #include <GL/glut.h>
 
+#include <QSize>
 #include "size.h"
 #include "point.h"
 #include "project.h"
-#include "position.h"
-#include <math.h>
 
 
 using namespace std;
@@ -27,7 +27,7 @@ void init(int       argc,
           char      **argv,
           uint      displayMode = (GLUT_SINGLE | GLUT_RGB),
           point     initPos = point(0,0),
-          size      initSize = size(400,400),
+          QSize      initSize =  QSize(400,400),
           string    windowTitle = "OpenGL window"
           );
 void run();
