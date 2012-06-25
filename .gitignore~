@@ -12,4 +12,3 @@
 *.a
 *.pro.user
 ./glex-build-desktop
-./glex-build-desktop/*
