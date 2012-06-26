@@ -4,7 +4,7 @@ project::project()
 {
     //bg = background(point(0,0,0));
 
-    pos = point(700,0,100);
+    pos = point(900,800,500);
     look = point(0,0,100);
     headDir = point(0,0,1);
     ang = angle(0,0,0);

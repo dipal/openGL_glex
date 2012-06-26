@@ -139,20 +139,15 @@ void background::draw()
             archUp();
         }glPopMatrix();
 
+        //road
         glPushMatrix();{
             glTranslatef(0,0,80);
-            glScalef(1,125,5.5);
-            double theta=0;
-            double pi=M_PI;
-            //glTranslatef(0,-pi/2.0,0);//pi/3.0-pi/3.0-pi/2.0
-            glBegin(GL_LINE_STRIP); {
-                for (theta=-pi; theta<=pi; theta+=0.01) {
-                    glVertex3f(0,theta,20*cos(theta));
-                }
-            }
-            glEnd();
+            glScalef(40,1000,10);
+            glutSolidCube(1);
+
         }glPopMatrix();
-        //glColor3f(.5,.5,.5);
+
+
 
     }glPopMatrix();
 }
