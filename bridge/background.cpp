@@ -179,39 +179,41 @@ void background::drawObjects()
         road();
     }glPopMatrix();
 
-    GLuint textureId = loadTexture(loadBMP("brk.bmp"));
 
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, textureId);
+    glPushMatrix();{
+//        GLuint textureId = loadTexture(loadBMP("brk.bmp"));
 
-    //Bottom
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+//        glEnable(GL_TEXTURE_2D);
+//        glBindTexture(GL_TEXTURE_2D, textureId);
 
-    glTranslatef(0,0,100);
+//        //Bottom
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    glBegin(GL_QUADS);{
-        glNormal3f(0,0,1);
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex3f(50,-100,-100);
-        glTexCoord2f(10.0f, 0.0f);
-        glVertex3f(50, 100,-100);
-        glTexCoord2f(10.0f, 10.0f);
-        glVertex3f(50, 100, 100);
-        glTexCoord2f(0.0f, 10.0f);
-        glVertex3f(50,-100, 100);
-    }glEnd();
+//        glTranslatef(0,0,100);
 
-    glDisable(GL_TEXTURE_2D);
+//        glBegin(GL_QUADS);{
+//            glNormal3f(0,0,1);
+//            glTexCoord2f(0.0f, 0.0f);
+//            glVertex3f(50,-100,-100);
+//            glTexCoord2f(10.0f, 0.0f);
+//            glVertex3f(50, 100,-100);
+//            glTexCoord2f(10.0f, 10.0f);
+//            glVertex3f(50, 100, 100);
+//            glTexCoord2f(0.0f, 10.0f);
+//            glVertex3f(50,-100, 100);
+//        }glEnd();
+
+//        glDisable(GL_TEXTURE_2D);
 
 
-    glTranslatef(0,-100,0);
-    Plane4Pt plane(point(50,-100,-100),
-                   point(50, 100,-100),
-                   point(50, 100, 100),
-                   point(50,-100, 100));
-    plane.draw();
-
+        glTranslatef(0,-100,100);
+        Plane4Pt plane(point(50,-100,-100),
+                       point(50, 100,-100),
+                       point(50, 100, 100),
+                       point(50,-100, 100));
+        plane.draw();
+    }glPopMatrix();
 }
 
 void background::draw()
@@ -225,9 +227,8 @@ void background::draw()
 
         drawObjects();
 
-        drawPlane();
 
-        /*glEnable(GL_STENCIL_TEST); //Enable using the stencil buffer
+        glEnable(GL_STENCIL_TEST); //Enable using the stencil buffer
         glColorMask(0, 0, 0, 0); //Disable drawing colors to the screen
         glDisable(GL_DEPTH_TEST); //Disable depth testing
         glStencilFunc(GL_ALWAYS, 1, 1); //Make the stencil test always pass
@@ -254,7 +255,7 @@ void background::draw()
         glEnable(GL_BLEND);
         glColor4f(1, 1, 1, 0.7f);
         drawPlane();
-        glDisable(GL_BLEND);*/
+        glDisable(GL_BLEND);
 
     }glPopMatrix();
 }
