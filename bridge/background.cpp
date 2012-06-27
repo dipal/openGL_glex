@@ -11,23 +11,36 @@ void background::init()
     roadLength=bridgeLength+400;
     bridgeWidth=80;
 
+    pilarLength=60;
+
     glEnable(GL_COLOR_MATERIAL);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 }
 void background::animate(){}
 
+
+//error pron
+void background::dbox(double xWidth,double yWidth,double zWidth,double xWidthTop)
+{
+    if (xWidthTop==0) xWidthTop=xWidth;
+    glPushMatrix();{
+        glScalef(xWidth,yWidth,zWidth);
+        glRotatef(45,0,0,1);
+        gluCylinder(gluNewQuadric(),1,xWidthTop/xWidth,1,4,4);
+    }glPopMatrix();
+
+}
+
 void background::pilar()
 {
-    glRotatef(45,0,0,1);
-    gluCylinder(gluNewQuadric(),bridgeWidth/2,bridgeWidth/2,170,4,4);
-    gluCylinder(gluNewQuadric(),bridgeWidth/2+20,bridgeWidth/2,20,4,4);
-
+    dbox(bridgeWidth/2+20,pilarLength/2+20,20,bridgeWidth/2);
     glTranslatef(0,0,20);
-    gluCylinder(gluNewQuadric(),bridgeWidth/2,bridgeWidth/2+10,5,4,4);
+    dbox(bridgeWidth/2,pilarLength/2,20,bridgeWidth/2);
+    //dbox(bridgeWidth/2+20,pilarLength/2,20,bridgeWidth/2);
 
-    glTranslatef(0,0,5);
-    gluCylinder(gluNewQuadric(),bridgeWidth/2+10,bridgeWidth/2,5,4,4);
+    //glTranslatef(0,0,20);
+    //dbox(bridgeWidth/2,pilarLength/2,100,bridgeWidth/2);
 }
 
 void background::archDown()
@@ -162,7 +175,7 @@ void background::drawObjects()
 
     //road
     glPushMatrix();{
-        glTranslatef(0,0,80);
+        glTranslatef(0,0,100);
         road();
     }glPopMatrix();
 

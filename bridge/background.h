@@ -16,11 +16,14 @@ public:
     double bridgeLength;
     double roadLength;
     double bridgeWidth;
+    double pilarLength;
+    double plilarHeight;
 
     void pilar();
     void archUp();
     void archDown();
     void road();
+    void dbox(double xWidth,double yWidth,double zWidth,double xWidthTop=0);
 
     void drawPlane();
     void drawObjects();
