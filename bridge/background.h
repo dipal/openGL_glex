@@ -14,8 +14,16 @@ public:
 
     point pos;
     double bridgeLength;
+    double roadLength;
+    double bridgeWidth;
 
     void pilar();
+    void archUp();
+    void archDown();
+    void road();
+
+    void drawPlane();
+    void drawObjects();
 
     void init();
     void animate();
