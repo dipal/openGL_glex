@@ -1,17 +1,11 @@
 #include "project.h"
+#include "viewer.h"
 
 project::project()
 {
-    //bg = background(point(0,0,0));
+    ms(isPressed, 0);
 
-    pos = point(200,-350,100);
-    look = point(0,-350,100);
-    headDir = point(0,0,1);
-    ang = angle(0,0,0);
-    moveSpeed = 5;
-    rotateSpeed=2;
-
-
+    shapes.addShape(new Viewer(Vector(200,-350,100), Vector(0,-350,100), Vector(0, 0, 1)));
     shapes.addShape(new background());
 }
 
@@ -46,14 +40,6 @@ void project::init() {
 //    GLfloat lightPos2[] = {-1.0f, 0.5f, 0.5f, 0.0f};
 //    glLightfv(GL_LIGHT1, GL_DIFFUSE, lightColor1);
 //    glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
-
-    cameraAngle = 0;	//// init the cameraAngle
-    cameraAngleDelta = 0.03;
-    rectAngle = 0;
-    canDrawGrid = true;
-    cameraHeight = 70;
-    cameraRadius = 150;
-
     shapes.init();
 
 }
@@ -65,8 +51,12 @@ void project::animate() {
 void project::draw() {
     //gluLookAt(cameraRadius*cos(cameraAngle), cameraRadius*sin(cameraAngle), cameraHeight,		0,0,0,		0,0,1);
     //gluLookAt(0, 100, 50,		0,0,0,		0,0,1);
-    gluLookAt(P(pos),		P(look),		P(headDir));
+//    gluLookAt(P(pos),		P(look),		P(headDir));
 
+	FOR(i, 256) {
+		if(!isPressed[i]) continue;
+		shapes.keyboardListener(i);
+	}
 
     glPushMatrix();{
         //glTranslatef(pos.x,pos.y,pos.z);
@@ -89,145 +79,18 @@ void project::draw() {
     glPopMatrix();
 
     shapes.draw();
-
-
-}
-
-void project::rotateXAxis(bool dir){
-    if (dir) headDir=headDir.rotate(look-pos,-rotateSpeed);
-    else headDir=headDir.rotate(look-pos,rotateSpeed);
-}
-
-void project::rotateYAxis(bool dir){
-    point change;
-    if (dir)    change = (look-pos).rotate(headDir,-rotateSpeed);
-    else        change = (look-pos).rotate(headDir,rotateSpeed);
-    look = change+pos;
-}
-
-void project::rotateZAxis(bool dir){
-    int tempRotateSpeed = rotateSpeed;
-    if (dir) tempRotateSpeed*=-1;
-
-    point rotateAxis = (look-pos).cross(headDir);
-    point change = (look-pos).rotate(rotateAxis,tempRotateSpeed);
-    look = change+pos;
-    headDir = headDir.rotate(rotateAxis,tempRotateSpeed);
 }
 
 void project::keyboardListener(unsigned char key, int x,int y) {
-
-    shapes.keyboardListener(key,x,y);
-
-    switch(key){
-
-    case '1':	//reverse the rotation of camera
-        cameraAngleDelta = -cameraAngleDelta;
-        break;
-
-    case '2':	//increase rotation of camera by 10%
-        cameraAngleDelta *= 1.1;
-        break;
-
-    case '3':	//decrease rotation
-        cameraAngleDelta /= 1.1;
-        break;
-
-    case '8':	//toggle grids
-        canDrawGrid = 1 - canDrawGrid;
-        break;
-
-    case 'o' :
-        rotateXAxis(0);
-        break;
-
-    case 'p' :
-        rotateXAxis(1);
-        break;
-    case 'l' :
-        rotateYAxis(0);
-        break;
-
-    case ';' :
-        rotateYAxis(1);
-        break;
-
-    case '.' :
-        rotateZAxis(0);
-        break;
-    case '/':
-        rotateZAxis(1);
-        break;
-
-    case 27:	//ESCAPE KEY -- simply exit
-        exit(0);
-        break;
-
-    default:
-        break;
-    }
-
-
+	isPressed[tolower(key)] = true;
 }
 
-void project::moveXAxis(bool dir){
-    point change = (look-pos).cross(headDir).unit()*moveSpeed;
-    if (dir) change = -change;
-    pos = pos+change;
-    look = look+change;
-}
-
-void project::moveYAxis(bool dir) {
-    point change = (look-pos).unit()*moveSpeed;
-    if (dir) change = -change;
-    pos = pos+change;
-    look = look + change;
-}
-
-void project::moveZAxis(bool dir) {
-    point change = headDir.unit()*moveSpeed;
-    if (dir) change = -change;
-    pos = pos+change;
-    look = look + change;
+void project::keyboardReleaseListener(unsigned char key, int x,int y) {
+	isPressed[tolower(key)] = false;
 }
 
 void project::specialKeyListener(int key, int x,int y) {
-    //solarSystem.specialKeyListener(key,x,y);
-
-    shapes.specialKeyListener(key,x,y);
-
-    switch(key){
-    case GLUT_KEY_DOWN:		//down arrow key
-        moveYAxis(1);
-        break;
-    case GLUT_KEY_UP:		// up arrow key
-        moveYAxis(0);
-        break;
-
-    case GLUT_KEY_RIGHT:
-        moveXAxis(0);
-        break;
-    case GLUT_KEY_LEFT:
-        moveXAxis(1);
-        break;
-    case GLUT_KEY_PAGE_UP:
-        moveZAxis(0);
-        break;
-    case GLUT_KEY_PAGE_DOWN:
-        moveZAxis(1);
-        break;
-
-    case GLUT_KEY_INSERT:
-        break;
-
-    case GLUT_KEY_HOME:
-        break;
-    case GLUT_KEY_END:
-        break;
-
-    default:
-        break;
-    }
+//    shapes.specialKeyListener(key);
 }
 
 void project::mouseListener(int button, int state, int x, int y) {
@@ -237,7 +100,7 @@ void project::mouseListener(int button, int state, int x, int y) {
     switch(button){
     case GLUT_LEFT_BUTTON:
         if(state == GLUT_DOWN){		// 2 times?? in ONE click? -- solution is checking DOWN or UP
-            cameraAngleDelta = -cameraAngleDelta;
+//            cameraAngleDelta = -cameraAngleDelta;
         }
         break;
 

@@ -62,6 +62,10 @@ void keyboardListener(unsigned char key, int x,int y){
     model.keyboardListener(key,x,y);
 }
 
+void keyboardReleaseListener(unsigned char key, int x,int y){
+    model.keyboardReleaseListener(key,x,y);
+}
+
 void specialKeyListener(int key, int x,int y){
     model.specialKeyListener(key,x,y);
 }
@@ -89,8 +93,11 @@ void init(int       argc,
     glutDisplayFunc(draw);
     glutIdleFunc(animate);
 
+    glutIgnoreKeyRepeat(1);
     glutKeyboardFunc(keyboardListener);
-    glutSpecialFunc(specialKeyListener);
+    glutKeyboardUpFunc(keyboardReleaseListener);
+
+//    glutSpecialFunc(specialKeyListener);
 
 
     glutMouseFunc(mouseListener);
