@@ -179,7 +179,30 @@ void background::drawObjects()
         road();
     }glPopMatrix();
 
+    GLuint textureId = loadTexture(loadBMP("brk.bmp"));
 
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, textureId);
+
+    //Bottom
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glTranslatef(0,0,100);
+
+    glBegin(GL_QUADS);{
+        glNormal3f(0,0,1);
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex3f(50,-100,-100);
+        glTexCoord2f(10.0f, 0.0f);
+        glVertex3f(50, 100,-100);
+        glTexCoord2f(10.0f, 10.0f);
+        glVertex3f(50, 100, 100);
+        glTexCoord2f(0.0f, 10.0f);
+        glVertex3f(50,-100, 100);
+    }glEnd();
+
+    glDisable(GL_TEXTURE_2D);
 
 }
 
