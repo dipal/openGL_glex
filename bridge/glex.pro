@@ -8,7 +8,10 @@ HEADERS +=  glex.h \
     imageloader.h \
     background.h \
     shapeinterface.h \
-    multishape.h
+    multishape.h \
+    plane4pt.h \
+    etemplate.h \
+    viewer.h
 
 SOURCES +=  main.cpp\
             glex.cpp \
@@ -17,7 +20,8 @@ SOURCES +=  main.cpp\
     imageloader.cpp \
     background.cpp \
     shapeinterface.cpp \
-    multishape.cpp
+    multishape.cpp \
+    plane4pt.cpp
 
 LIBS    +=  -L/usr/lib -lglut \
             -L/usr/lib -lGL \

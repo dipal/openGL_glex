@@ -123,7 +123,7 @@ void background::drawPlane()
     //plane
     //glColor3f(.2,.5,0);
     glBegin(GL_QUADS);{
-        //glNormal3f(0,0,1);
+        glNormal3f(0,0,1);
         glVertex3f(-1000,-1000,0);
         glVertex3f( 1000,-1000,0);
         glVertex3f( 1000, 1000,0);
@@ -204,6 +204,14 @@ void background::drawObjects()
 
     glDisable(GL_TEXTURE_2D);
 
+
+    glTranslatef(0,-100,0);
+    Plane4Pt plane(point(50,-100,-100),
+                   point(50, 100,-100),
+                   point(50, 100, 100),
+                   point(50,-100, 100));
+    plane.draw();
+
 }
 
 void background::draw()
@@ -217,7 +225,9 @@ void background::draw()
 
         drawObjects();
 
-        glEnable(GL_STENCIL_TEST); //Enable using the stencil buffer
+        drawPlane();
+
+        /*glEnable(GL_STENCIL_TEST); //Enable using the stencil buffer
         glColorMask(0, 0, 0, 0); //Disable drawing colors to the screen
         glDisable(GL_DEPTH_TEST); //Disable depth testing
         glStencilFunc(GL_ALWAYS, 1, 1); //Make the stencil test always pass
@@ -244,7 +254,7 @@ void background::draw()
         glEnable(GL_BLEND);
         glColor4f(1, 1, 1, 0.7f);
         drawPlane();
-        glDisable(GL_BLEND);
+        glDisable(GL_BLEND);*/
 
     }glPopMatrix();
 }

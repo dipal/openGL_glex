@@ -10,20 +10,16 @@
 #define PLANE4PT_H_
 
 #include "shapeinterface.h"
-#include "vector.h"
+#include "point.h"
+
+#include <GL/gl.h>
 
 class Plane4Pt : public ShapeInterface {
-	vector<Vector> pts;
-	Plane4Pt(Vector pt1, Vector pt2, Vector pt3, Vector pt4) {
-		pts.push_back(pt1); pts.push_back(pt2);
-		pts.push_back(pt3); pts.push_back(pt4);
-	}
+public:
+        vector<point> pts;
+        Plane4Pt(point pt1, point pt2, point pt3, point pt4);
 
-	void draw() {
-		glBegin(GL_QUADS); {
-			FOR(i, 4) glVertex3d(V(pts[0]));
-		} glEnd();
-	}
+        void draw();
 };
 
 #endif /* PLANE4PT_H_ */

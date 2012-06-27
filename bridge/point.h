@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <math.h>
-
+#include "etemplate.h"
 using namespace std;
 
 #define P(pt) pt.x,pt.y,pt.z
@@ -28,8 +28,7 @@ public:
     friend point operator*(point b,double a) {	return a*b;}
     friend point operator/(point b,double a) {	return point(b.x/a, b.y/a, b.z/a);}
 
-        double sqr(double ix) { return ix*ix; }
-	double sqrMag() { return sqr(x)+sqr(y)+sqr(z); } // square of magnitude
+        double sqrMag() { return sqr(x)+sqr(y)+sqr(z); } // square of magnitude
 	double mag(){ return sqrt(sqrMag()); } //magnitude
 	void normalize(){ double d = mag(); x/=d; y/=d; z/=d; }
         point unit() { point ret = *this;	ret.normalize(); return ret; }

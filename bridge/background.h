@@ -6,6 +6,7 @@
 #include "point.h"
 #include "shapeinterface.h"
 #include "imageloader.h"
+#include "plane4pt.h"
 
 class background : public ShapeInterface
 {
