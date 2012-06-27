@@ -16,8 +16,8 @@ public:
     void init();
     void animate();
     void draw();
-    void keyboardListener(unsigned char key, int x,int y);
-    void specialKeyListener(int key, int x,int y);
+    void keyboardListener(unsigned char key);
+    void specialKeyListener(int key);
     void mouseListener(int button, int state, int x, int y);
 
 };
