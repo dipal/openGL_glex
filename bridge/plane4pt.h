@@ -19,10 +19,12 @@ class Plane4Pt: public ShapeInterface {
 	double xRepeat, yRepeat;
 	vector<point> pts;
 public:
-	Plane4Pt(point pt1, point pt2, point pt3, point pt4, GLuint textureId,
-			double xRepeat, double yRepeat);
+        Plane4Pt(point pt1, point pt2, point pt3, point pt4, GLuint textureId=0,
+                        double xRepeat=1, double yRepeat=1);
+        Plane4Pt(){}
 
 	void draw();
+        void forward(double xLimit=0,double xReset=0);
 };
 
 #endif /* PLANE4PT_H_ */

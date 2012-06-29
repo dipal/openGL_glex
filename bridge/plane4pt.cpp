@@ -9,6 +9,17 @@ Plane4Pt::Plane4Pt(point pt1, point pt2, point pt3, point pt4, GLuint textureId,
 	pts.push_back(pt4);
 }
 
+void Plane4Pt::forward(double xLimit,double xReset)
+{
+    int i;
+    for (i=0; i<pts.size(); i++) pts[i]=pts[i]+point(2,0,0);
+
+    if (xLimit==0) return ;
+    if (pts[0].x>=xLimit) {
+        for (i=0; i<pts.size(); i++) pts[i]=pts[i]-point(xReset,0,0);
+    }
+}
+
 void Plane4Pt::draw() {
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, textureId);

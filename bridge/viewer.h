@@ -31,6 +31,7 @@ class Viewer: public ShapeInterface {
 
 	bool buttonDown[20];
 	int mousex, mousey;
+        bool animeActive;
 
 public:
 	Viewer(Vector eye, Vector look, Vector head) :
@@ -57,6 +58,7 @@ public:
 
 		key2func['7'] = mp(ROLL, 0);
 		key2func['9'] = mp(ROLL, 1);
+
 	}
 
 	void init() {
@@ -66,7 +68,7 @@ public:
 
 		upDownRatio = leftRightRatio = forBackwardRatio = 10;
 
-		yawChange = 0.1;
+                yawChange = 0.1;
 		pitchChange = 0.1;
 		rollChange = 0.1;
 
@@ -166,8 +168,82 @@ public:
 	}
 
 
+        void animate()
+        {
+            if (!animeActive) return ;
+
+            if(eyePos.x==150 && eyePos.y==-300 && eyePos.z>=50 && eyePos.z<200) {
+                moveUpDown(0);
+                return ;
+//                double rotAngle=90;
+//                lookAt = (lookAt - eyePos).rotate(headDir, rotAngle) + eyePos;
+//                rotZ += rotAngle;
+            }
+
+            if (eyePos.x==150 && eyePos.y<=-300 && eyePos.y>-400 && eyePos.z==200) {
+                moveLeftRight(0);
+                return ;
+            }
+
+            if (eyePos.x<=150 && eyePos.x>0 && eyePos.y==-400 && eyePos.z==200) {
+                moveForBackward(0);
+                return ;
+            }
+
+            if (eyePos.x==0 && eyePos.y==-400 && eyePos.z==200) {
+                double rotAngle=(M_PI/180.0)*(-90);
+                lookAt = (lookAt - eyePos).rotate(headDir, rotAngle) + eyePos;
+                rotZ += rotAngle;
+                moveForBackward(0);
+                return ;
+            }
+
+            if (eyePos.x<10 && eyePos.y>=-400 && eyePos.y<400) {
+                moveForBackward(0);
+
+                if (eyePos.z>120) moveUpDown(1);
+                return ;
+            }
+
+            if (eyePos.x<10 && eyePos.y==400) {
+                double rotAngle=(M_PI/180.0)*(90);
+                lookAt = (lookAt - eyePos).rotate(headDir, rotAngle) + eyePos;
+                rotZ += rotAngle;
+                moveForBackward(1);
+                moveForBackward(1);
+                return ;
+            }
+
+            if (eyePos.x>10 && eyePos.x<800 && eyePos.y==400) {
+                moveForBackward(1);
+                return ;
+            }
+
+            if (eyePos.x>=800 && eyePos.y<=400 && eyePos.y>-300) {
+                moveLeftRight(0);
+                return ;
+            }
+            if (eyePos.y==-300 && eyePos.x!=0) {
+                moveForBackward(0);
+                return ;
+            }
+
+            /*if (eyePos.x==0 && eyePos.y>=-400) {
+                moveForBackward(0);
+                return ;
+            }*/
+            //moveForBackward(0);
+        }
+
 	virtual void keyboardListener(unsigned char key) {
 		execOperation(key2func[key].first, key2func[key].second);
+                if (key=='m') animeActive=true;
+                if (key=='n') animeActive=false;
+                if (key=='r') {
+                    eyePos=Vector(800,-300,50);
+                    lookAt=Vector(0,-300,50);
+                    headDir=Vector(0,0,1);
+                }
 	}
 
 	void draw() {

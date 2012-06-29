@@ -5,8 +5,9 @@ project::project()
 {
     ms(isPressed, 0);
 
-    shapes.addShape(&light);
-    shapes.addShape(new Viewer(Vector(200,-350,200), Vector(0,-350,200), Vector(0, 0, 1)));
+	shapes.addShape(&light);
+    shapes.addShape(new Viewer(Vector(400,0,50), Vector(0,0,50), Vector(0, 0, 1)));
+
     shapes.addShape(new background());
 }
 
@@ -15,7 +16,7 @@ void project::init() {
 }
 
 void project::animate() {
-	glutPostRedisplay();
+    shapes.animate();
 }
 
 void project::draw() {
@@ -54,6 +55,7 @@ void project::draw() {
 void project::keyboardListener(unsigned char key, int x,int y) {
     if (key==27) exit(0);
 	isPressed[tolower(key)] = true;
+    shapes.keyboardListener(key);
 }
 
 void project::keyboardReleaseListener(unsigned char key, int x,int y) {

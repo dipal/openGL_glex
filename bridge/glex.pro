@@ -11,7 +11,8 @@ HEADERS +=  glex.h \
     multishape.h \
     plane4pt.h \
     etemplate.h \
-    viewer.h
+    viewer.h \
+    arcbrick.h
 
 SOURCES +=  main.cpp\
             glex.cpp \
@@ -21,7 +22,8 @@ SOURCES +=  main.cpp\
     background.cpp \
     shapeinterface.cpp \
     multishape.cpp \
-    plane4pt.cpp
+    plane4pt.cpp \
+    arcbrick.cpp
 
 LIBS    +=  -L/usr/lib -lglut \
             -L/usr/lib -lGL \
