@@ -15,20 +15,27 @@ public:
 
     background(point ipos=point(0,0,0));
 
+    int LEFT;
+    int RIGHT;
+
     point pos;
     double bridgeLength;
     double roadLength;
+    double roadWidth;
     double bridgeWidth;
     double pilarLength;
-    double plilarHeight;
+    double pilarMidHeight;
     double upperPillarWidth;
+    double upperPillarHeight;
     double upperSmallPillarLength;
     double upperSmallPillarWidth;
+    double upperSmallPillarHeight;
+    double pilarTopHeight;
 
     string resourcePath;
 
     void pilar();
-    void upperPillar();
+    void upperPillar(int side);
     void upperPillarUpperPortion();
     void archUp();
     void archDown();
@@ -40,6 +47,8 @@ public:
     GLuint rockBrickId;
     GLuint redBrickId;
     GLuint whiteBrickId;
+    GLuint railTrackId;
+    GLuint rockRoadId;
 
     void drawPlane();
     void drawObjects();

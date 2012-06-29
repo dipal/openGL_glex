@@ -7,14 +7,23 @@ background::background(point ipos) : pos(ipos)
 
 void background::init()
 {
+
+    LEFT = -1;
+    RIGHT = 1;
+
     bridgeLength=600;
     roadLength=bridgeLength+400;
     bridgeWidth=150;
+    roadWidth=bridgeWidth/2;
 
     pilarLength=60;
+    pilarMidHeight=100;
     upperPillarWidth=bridgeWidth/2-30;
+    upperPillarHeight=50;
     upperSmallPillarWidth = upperPillarWidth/2-10;
     upperSmallPillarLength = pilarLength/2-10;
+    upperSmallPillarHeight=50;
+    pilarTopHeight=25;
 
     glEnable(GL_COLOR_MATERIAL);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -24,6 +33,8 @@ void background::init()
     brickId = loadTexture(loadBMP((resourcePath+"brick5.bmp").c_str()));
     whiteBrickId = loadTexture(loadBMP((resourcePath+"brick9.bmp").c_str()));
     rockBrickId = loadTexture(loadBMP((resourcePath+"brick_texture_1.bmp").c_str()));
+    railTrackId = loadTexture(loadBMP((resourcePath+"railTrack.bmp").c_str()));
+    rockRoadId = loadTexture(loadBMP((resourcePath+"rockRoad.bmp").c_str()));
 
 }
 void background::animate(){}
@@ -93,17 +104,16 @@ void background::dbox(double xWidth,double yWidth,double zWidth,double xTopWidth
 
 void background::upperPillarUpperPortion()
 {
-    dbox(upperSmallPillarWidth,upperSmallPillarLength,50,0,0,whiteBrickId,1,1);
+    dbox(upperSmallPillarWidth,upperSmallPillarLength,upperSmallPillarHeight,0,0,whiteBrickId,1,1);
 }
 
-void background::upperPillar()
+void background::upperPillar(int side)
 {
-    int height=50;
     double pos[][2]={{1,1},{-1,1},{1,-1},{-1,-1}};
 
-    dbox(upperPillarWidth,pilarLength,height,0,0,whiteBrickId,1,1);
+    dbox(upperPillarWidth,pilarLength,upperPillarHeight,0,0,whiteBrickId,1,1);
 
-    glTranslatef(0,0,height);
+    glTranslatef(0,0,upperPillarHeight);
     for (int i=0; i<4; i++)
     {
         glPushMatrix();{
@@ -112,8 +122,26 @@ void background::upperPillar()
         }glPopMatrix();
     }
 
-    //glTranslatef();
-    //dbox(upperPillarWidth,pilarLength,25,0,0,whiteBrickId,1,.5);
+    glTranslatef(0,0,upperSmallPillarHeight);
+    dbox(upperPillarWidth+5,pilarLength+5,pilarTopHeight,0,0,whiteBrickId,1,.5);
+
+    glTranslatef(0,0,pilarTopHeight);
+    glPushMatrix();{
+        glTranslatef(0,-pilarLength/2,0);
+        dbox(upperPillarWidth+1,1,15);
+    }glPopMatrix();
+
+    glPushMatrix();{
+        glTranslatef(0,pilarLength/2,0);
+        dbox(upperPillarWidth+1,1,15);
+    }glPopMatrix();
+
+    glPushMatrix();{
+        glTranslatef(side*(-upperPillarWidth/2),0,0);
+        dbox(1,pilarLength,15);
+    }glPopMatrix();
+
+
 }
 
 void background::pilar()
@@ -127,23 +155,23 @@ void background::pilar()
     dbox(bridgeWidth+5,pilarLength+5,5,bridgeWidth,pilarLength,rockBrickId,10,1);
 
     glTranslatef(0,0,5);
-    dbox(bridgeWidth,pilarLength,75,0,0,brickId,2,2);
+    dbox(bridgeWidth,pilarLength,pilarMidHeight-25,0,0,brickId,2,2);
 
 
-    glTranslatef(0,0,75);
+    glTranslatef(0,0,pilarMidHeight-25);
 
     glPushMatrix();{
         glTranslatef(bridgeWidth/2-upperPillarWidth/2,0,0);
-        upperPillar();
+        upperPillar(LEFT);
     }glPopMatrix();
 
     glPushMatrix();{
         glTranslatef(-(bridgeWidth/2-upperPillarWidth/2),0,0);
-        upperPillar();
+        upperPillar(RIGHT);
     }glPopMatrix();
 
-    //glTranslatef(0,0,2*height);
-    //dbox(bridgeWidth,pilarLength,20,0,0,whiteBrickId);
+    glTranslatef(0,0,upperPillarHeight+upperSmallPillarHeight);
+    dbox(bridgeWidth-2*upperPillarWidth,pilarLength,pilarTopHeight,0,0,whiteBrickId);
 
 }
 
@@ -179,6 +207,46 @@ void background::archDown()
 
 void background::road()
 {
+    double x;
+    double y;
+    double z;
+
+    double width=roadWidth/2;
+    glPushMatrix();{
+        glTranslatef(-width/2,0,0);
+        x=width/6;
+        y=roadLength/2;
+        z=7;
+        Plane4Pt plane = Plane4Pt(point(-x,-y,z),
+                                  point(x,-y,z),
+                                  point(x,y,z),
+                                  point(-x,y,z));
+        plane.draw(railTrackId,1,20);
+
+    }glPopMatrix();
+
+    glPushMatrix();{
+        glTranslatef(width/2,0,0);
+        x=width/6;
+        y=roadLength/2;
+        z=7;
+        Plane4Pt plane = Plane4Pt(point(-x,-y,z),
+                                  point(x,-y,z),
+                                  point(x,y,z),
+                                  point(-x,y,z));
+        plane.draw(railTrackId,1,20);
+
+    }glPopMatrix();
+
+    x=roadWidth/2;
+    y=roadLength/2;
+    z=6;
+
+    Plane4Pt plane = Plane4Pt(point(-x,-y,z),
+                     point(x,-y,z),
+                     point(x,y,z),
+                     point(-x,y,z));
+    plane.draw(rockRoadId,10,50);
     glScalef(bridgeWidth/2,roadLength,10);
     glutSolidCube(1);
 }
