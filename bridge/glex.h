@@ -7,7 +7,6 @@
 
 #include <GL/glut.h>
 
-#include <QSize>
 #include "point.h"
 #include "project.h"
 
@@ -26,7 +25,7 @@ void init(int       argc,
           char      **argv,
           uint      displayMode = (GLUT_SINGLE | GLUT_RGB),
           point     initPos = point(0,0),
-          QSize      initSize =  QSize(400,400),
+          pair<int,int> initSize = pair<int,int>(400,400),
           string    windowTitle = "OpenGL window"
           );
 void run();
