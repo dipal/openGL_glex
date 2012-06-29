@@ -74,11 +74,15 @@ void mouseListener(int button, int state, int x, int y){	//x, y is the x-y of th
     model.mouseListener(button,state,x,y);
 }
 
+void motionListener(int x, int y){	//x, y is the x-y of the screen (2D)
+    model.motionListener(x,y);
+}
+
 void init(int       argc,
           char      **argv,
           uint      displayMode,
           point     initPos,
-          QSize      initSize,
+          pair<int,int>      initSize,
           string    windowTitle
           )
 {
@@ -86,7 +90,7 @@ void init(int       argc,
     //Simple buffer
     glutInitDisplayMode(displayMode);
     glutInitWindowPosition(initPos.x,initPos.y);
-    glutInitWindowSize(initSize.height(),initSize.width());
+    glutInitWindowSize(initSize.first,initSize.second);
     glutCreateWindow(windowTitle.c_str());
     initRendering();
 
@@ -101,6 +105,8 @@ void init(int       argc,
 
 
     glutMouseFunc(mouseListener);
+
+    glutMotionFunc(motionListener);
 
     //Call to the drawing function
 

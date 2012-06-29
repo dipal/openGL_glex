@@ -30,6 +30,7 @@ public:
     void keyboardReleaseListener(unsigned char key, int x,int y);
     void specialKeyListener(int key, int x,int y);
     void mouseListener(int button, int state, int x, int y);
+    void motionListener(int x, int y);
 
 };
 

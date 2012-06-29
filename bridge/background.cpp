@@ -291,8 +291,8 @@ void background::drawObjects()
                        point(50, 100,-100),
                        point(50, 100, 100),
                        point(50,-100, 100));
+
         plane.draw(rockBrickId);
-        //plane.draw();
     }glPopMatrix();
 }
 
