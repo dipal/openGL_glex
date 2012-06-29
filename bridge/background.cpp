@@ -212,7 +212,7 @@ void background::drawObjects()
                        point(50, 100,-100),
                        point(50, 100, 100),
                        point(50,-100, 100));
-        plane.draw(loadTexture(loadBMP("src/brick_texture_1.bmp")));
+//        plane.draw(loadTexture(loadBMP("src/brick_texture_1.bmp")));
     }glPopMatrix();
 }
 

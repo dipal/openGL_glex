@@ -117,3 +117,7 @@ void project::mouseListener(int button, int state, int x, int y) {
         break;
     }
 }
+
+void project::motionListener(int x, int y) {
+	shapes.motionListener(x,y);
+}

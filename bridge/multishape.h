@@ -19,7 +19,7 @@ public:
     void keyboardListener(unsigned char key);
     void specialKeyListener(int key);
     void mouseListener(int button, int state, int x, int y);
-
+    void motionListener(int x, int y);
 };
 
 #endif // MULTISHAPE_H
