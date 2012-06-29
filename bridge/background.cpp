@@ -53,41 +53,41 @@ void background::dbox(double xWidth,double yWidth,double zWidth,double xTopWidth
     point up3 = point(-xt,yt,zt);
     point up4 = point(-xt,-yt,zt);
 
-    Plane4Pt plane(bottom1,
+    Plane4Pt(bottom1,
                    bottom2,
                    up2,
-                   up1);
-    plane.draw(textureId,xRepeat,yRepeat);
+                   up1,
+                   textureId,xRepeat,yRepeat).draw();
 
-    plane = Plane4Pt(bottom2,
+    Plane4Pt(bottom2,
                      bottom3,
                      up3,
-                     up2);
-    plane.draw(textureId,xRepeat,yRepeat);
+                     up2,
+                     textureId,xRepeat,yRepeat).draw();
 
-    plane = Plane4Pt(bottom3,
+    Plane4Pt(bottom3,
                      bottom4,
                      up4,
-                     up3);
-    plane.draw(textureId,xRepeat,yRepeat);
+                     up3,
+                     textureId,xRepeat,yRepeat).draw();
 
-    plane = Plane4Pt(bottom4,
+    Plane4Pt(bottom4,
                      bottom1,
                      up1,
-                     up4);
-    plane.draw(textureId,xRepeat,yRepeat);
+                     up4,
+                     textureId,xRepeat,yRepeat).draw();
 
-    plane = Plane4Pt(bottom1,
+    Plane4Pt(bottom1,
                      bottom2,
                      bottom3,
-                     bottom4);
-    plane.draw(textureId,xRepeat,yRepeat);
+                     bottom4,
+                     textureId,xRepeat,yRepeat).draw();
 
-    plane = Plane4Pt(up1,
+    Plane4Pt(up1,
                      up2,
                      up3,
-                     up4);
-    plane.draw(textureId,xRepeat,yRepeat);
+                     up4,
+                     textureId,xRepeat,yRepeat).draw();
 }
 
 
@@ -281,18 +281,6 @@ void background::drawObjects()
     glPushMatrix();{
         glTranslatef(0,0,100);
         road();
-    }glPopMatrix();
-
-
-    glPushMatrix();{
-
-        glTranslatef(0,-100,100);
-        Plane4Pt plane(point(50,-100,-100),
-                       point(50, 100,-100),
-                       point(50, 100, 100),
-                       point(50,-100, 100));
-
-        plane.draw(rockBrickId);
     }glPopMatrix();
 }
 

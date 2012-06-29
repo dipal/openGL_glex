@@ -14,12 +14,15 @@
 
 #include <GL/gl.h>
 
-class Plane4Pt : public ShapeInterface {
+class Plane4Pt: public ShapeInterface {
+	GLuint textureId;
+	double xRepeat, yRepeat;
+	vector<point> pts;
 public:
-        vector<point> pts;
-        Plane4Pt(point pt1, point pt2, point pt3, point pt4);
+	Plane4Pt(point pt1, point pt2, point pt3, point pt4, GLuint textureId,
+			double xRepeat, double yRepeat);
 
-        void draw(GLuint textureId=0,double xRepeat=1,double yRepeat=1);
+	void draw();
 };
 
 #endif /* PLANE4PT_H_ */
