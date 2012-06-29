@@ -117,16 +117,68 @@ void background::dbox(double xWidth,double yWidth,double zWidth,double xTopWidth
                      textureId,xRepeat,yRepeat).draw();
 }
 
-
-void background::upperPillarUpperPortion()
+void background::wall(double width,double height,double depth,GLuint textureId,double xRepeat,double yRepeat)
 {
+    double s=width/3;
+    glPushMatrix();{
+        glTranslatef(0,-width/2+s/2,0);
+        dbox(depth,s,height);
+    }glPopMatrix();
+
+    glPushMatrix();{
+        glTranslatef(0,width/2-s/2,0);
+        dbox(depth,s,height);
+    }glPopMatrix();
+
+    glPushMatrix();{
+        glTranslatef(0,0,height-10);
+        dbox(depth,s,10);
+    }glPopMatrix();
+
+    height-=10;
+    glPushMatrix();{
+        glTranslatef(depth/2,0,0);
+        glRotatef(90,0,0,1);
+        ArcBrick(s/2,depth,height,5).draw();
+    }glPopMatrix();
+
+    glPushMatrix();{
+        glTranslatef(-depth/2,0,0);
+        glRotatef(-90,0,0,1);
+        ArcBrick(s/2,depth,height,5).draw();
+    }glPopMatrix();
+}
+
+void background::upperPillarUpperPortion(int i)
+{
+
+    int pos[][4] = {{-1,-1},{-1,-1},{1,1},{1,1}};
+    int rotate[]={-90,-90,90,90};
+
+    int pos2[][4] = {{-1,1},{1,-1},{-1,1},{1,-1}};
+    int rotate2[]={180,0,180,0};
     dbox(upperSmallPillarWidth,upperSmallPillarLength,upperSmallPillarHeight,0,0,whiteBrickId,1,1);
 
-    //double arcHeight=upperSmallPillarHeight-
-    //glTranslatef(upperSmallPillarLength/2,0,0);
-    glTranslatef(30,30,30);
-    //glRotatef(90,0,0,1);
-    ArcBrick((pilarLength-upperSmallPillarLength)/2,(pilarLength-upperSmallPillarLength)/2,10,5).draw();
+    glPushMatrix();{
+        double arcWidth=(pilarLength-upperSmallPillarLength*2)/2;
+        double arcHeight=arcWidth+10;
+        double arcDepth=upperSmallPillarWidth;
+
+        glTranslatef(pos[i][0]*upperSmallPillarWidth/2,pos[i][1]*upperSmallPillarLength,upperSmallPillarHeight-arcHeight);
+        glRotatef(rotate[i],0,0,1);
+        ArcBrick(arcWidth,arcDepth,arcHeight,5,rockBrickId).draw();
+    }glPopMatrix();
+
+    glPushMatrix();{
+        double arcWidth=(upperPillarWidth-upperSmallPillarWidth*2)/2;
+        double arcHeight=arcWidth+10;
+        double arcDepth=upperSmallPillarLength;
+
+        glTranslatef(pos2[i][0]*(upperSmallPillarWidth/2+arcWidth),pos2[i][1]*upperSmallPillarLength/2,upperSmallPillarHeight-arcHeight);
+        glRotatef(rotate2[i],0,0,1);
+        ArcBrick(arcWidth,arcDepth,arcHeight,5,rockBrickId).draw();
+    }glPopMatrix();
+
     //ArcBrick(10,100,10,5).draw();
 }
 
@@ -141,7 +193,7 @@ void background::upperPillar(int side)
     {
         glPushMatrix();{
             glTranslatef((upperPillarWidth/2-upperSmallPillarWidth/2)*pos[i][0],(pilarLength/2-upperSmallPillarLength/2)*pos[i][1],0);
-            upperPillarUpperPortion();
+            upperPillarUpperPortion(i);
         }glPopMatrix();
     }
 
@@ -230,6 +282,7 @@ void background::archDown()
 
 void background::road()
 {
+    wall(100,50,20);
     double x;
     double y;
     double z;

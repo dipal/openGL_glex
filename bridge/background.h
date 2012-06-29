@@ -37,11 +37,12 @@ public:
 
     void pilar();
     void upperPillar(int side);
-    void upperPillarUpperPortion();
+    void upperPillarUpperPortion(int i);
     void archUp();
     void archDown();
     void road();
     void dbox(double xWidth,double yWidth,double zWidth,double xTopWidth=0,double yTopWidth=0,GLuint textureId=0,double xRepeat=1,double yRepeat=1);
+    void wall(double width,double height,double depth,GLuint textureId=0,double xRepeat=1,double yRepeat=1);
     void widthedTriangle(double xWidth,double yWidth,double zWidth,double xTopWidth=0,GLuint textureId=0,double xRepeat=1,double yRepeat=1);
 
     GLuint brickId;
