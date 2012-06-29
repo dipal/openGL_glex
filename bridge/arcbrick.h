@@ -10,6 +10,7 @@
 #define ARCBRICK_H_
 
 #include "shapeinterface.h"
+#include <GL/gl.h>
 
 class ArcBrick: public ShapeInterface {
 	double xLen, yLen, zLen;
