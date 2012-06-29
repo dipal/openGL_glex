@@ -90,11 +90,30 @@ void background::dbox(double xWidth,double yWidth,double zWidth,double xTopWidth
     plane.draw(textureId,xRepeat,yRepeat);
 }
 
-void background::upperPillar()
+
+void background::upperPillarUpperPortion()
 {
     dbox(upperSmallPillarWidth,upperSmallPillarLength,50,0,0,whiteBrickId,1,1);
+}
 
+void background::upperPillar()
+{
+    int height=50;
+    double pos[][2]={{1,1},{-1,1},{1,-1},{-1,-1}};
 
+    dbox(upperPillarWidth,pilarLength,height,0,0,whiteBrickId,1,1);
+
+    glTranslatef(0,0,height);
+    for (int i=0; i<4; i++)
+    {
+        glPushMatrix();{
+            glTranslatef((upperPillarWidth/2-upperSmallPillarWidth/2)*pos[i][0],(pilarLength/2-upperSmallPillarLength/2)*pos[i][1],0);
+            upperPillarUpperPortion();
+        }glPopMatrix();
+    }
+
+    //glTranslatef();
+    //dbox(upperPillarWidth,pilarLength,25,0,0,whiteBrickId,1,.5);
 }
 
 void background::pilar()
@@ -113,21 +132,14 @@ void background::pilar()
 
     glTranslatef(0,0,75);
 
-    int height=50;
-    double pos[][2]={{1,1},{-1,1},{1,-1},{-1,-1}};
-
     glPushMatrix();{
         glTranslatef(bridgeWidth/2-upperPillarWidth/2,0,0);
-        dbox(upperPillarWidth,pilarLength,height,0,0,whiteBrickId,1,1);
+        upperPillar();
+    }glPopMatrix();
 
-        glTranslatef(0,0,height);
-        for (int i=0; i<4; i++)
-        {
-            glPushMatrix();{
-                glTranslatef((upperPillarWidth/2-upperSmallPillarWidth/2)*pos[i][0],(pilarLength/2-upperSmallPillarLength/2)*pos[i][1],0);
-                upperPillar();
-            }glPopMatrix();
-        }
+    glPushMatrix();{
+        glTranslatef(-(bridgeWidth/2-upperPillarWidth/2),0,0);
+        upperPillar();
     }glPopMatrix();
 
     //glTranslatef(0,0,2*height);
