@@ -35,6 +35,7 @@ void background::init()
     rockBrickId = loadTexture(loadBMP((resourcePath+"brick_texture_1.bmp").c_str()));
     railTrackId = loadTexture(loadBMP((resourcePath+"railTrack.bmp").c_str()));
     rockRoadId = loadTexture(loadBMP((resourcePath+"rockRoad.bmp").c_str()));
+    railTrackShinyId = loadTexture(loadBMP((resourcePath+"railTrackShiny.bmp").c_str()));
 
 }
 void background::animate(){}
@@ -220,8 +221,9 @@ void background::road()
         Plane4Pt plane = Plane4Pt(point(-x,-y,z),
                                   point(x,-y,z),
                                   point(x,y,z),
-                                  point(-x,y,z));
-        plane.draw(railTrackId,1,20);
+                                  point(-x,y,z),
+                                  railTrackShinyId,1,20);
+        plane.draw();
 
     }glPopMatrix();
 
@@ -233,8 +235,23 @@ void background::road()
         Plane4Pt plane = Plane4Pt(point(-x,-y,z),
                                   point(x,-y,z),
                                   point(x,y,z),
-                                  point(-x,y,z));
-        plane.draw(railTrackId,1,20);
+                                  point(-x,y,z),
+                                  railTrackShinyId,1,20);
+        plane.draw();
+
+    }glPopMatrix();
+
+    glPushMatrix();{
+        glTranslatef(0-3,0,0);
+        x=width/6;
+        y=roadLength/2;
+        z=7;
+        Plane4Pt plane = Plane4Pt(point(-x,-y,z),
+                                  point(x,-y,z),
+                                  point(x,y,z),
+                                  point(-x,y,z),
+                                  railTrackShinyId,1,20);
+        plane.draw();
 
     }glPopMatrix();
 
@@ -245,8 +262,9 @@ void background::road()
     Plane4Pt plane = Plane4Pt(point(-x,-y,z),
                      point(x,-y,z),
                      point(x,y,z),
-                     point(-x,y,z));
-    plane.draw(rockRoadId,10,50);
+                     point(-x,y,z),
+                     rockRoadId,10,50);
+    plane.draw();
     glScalef(bridgeWidth/2,roadLength,10);
     glutSolidCube(1);
 }

@@ -49,6 +49,7 @@ public:
     GLuint whiteBrickId;
     GLuint railTrackId;
     GLuint rockRoadId;
+    GLuint railTrackShinyId;
 
     void drawPlane();
     void drawObjects();
