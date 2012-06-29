@@ -1,28 +1,27 @@
 //============================================================================
-// Name        : plane4pt.h
+// Name        : arcbrick.h
 // Author      : enzam
-// Created At  : Jun 27, 2012 10:06:24 PM
+// Created At  : Jun 29, 2012 11:18:16 AM
 // Description : None
 // Accepted	   : Unknown
 //============================================================================
 
-#ifndef PLANE4PT_H_
-#define PLANE4PT_H_
+#ifndef ARCBRICK_H_
+#define ARCBRICK_H_
 
 #include "shapeinterface.h"
-#include "point.h"
-
 #include <GL/gl.h>
 
-class Plane4Pt: public ShapeInterface {
+class ArcBrick: public ShapeInterface {
+	double xLen, yLen, zLen;
+	int numSteps;
 	GLuint textureId;
 	double xRepeat, yRepeat;
-	vector<point> pts;
 public:
-	Plane4Pt(point pt1, point pt2, point pt3, point pt4, GLuint textureId,
-			double xRepeat, double yRepeat);
+	ArcBrick(double xLen, double yLen, double zLen, int numSteps,
+			GLuint textureId, double xRepeat, double yRepeat);
 
 	void draw();
 };
 
-#endif /* PLANE4PT_H_ */
+#endif /* ARCBRICK_H_ */
