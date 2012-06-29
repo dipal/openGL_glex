@@ -13,6 +13,8 @@ void background::init()
 
     pilarLength=60;
     upperPillarWidth=bridgeWidth/2-30;
+    upperSmallPillarWidth = upperPillarWidth/2-10;
+    upperSmallPillarLength = pilarLength/2-10;
 
     glEnable(GL_COLOR_MATERIAL);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -90,9 +92,7 @@ void background::dbox(double xWidth,double yWidth,double zWidth,double xTopWidth
 
 void background::upperPillar()
 {
-    int height=50;
-
-
+    dbox(upperSmallPillarWidth,upperSmallPillarLength,50,0,0,whiteBrickId,1,1);
 
 
 }
@@ -114,21 +114,25 @@ void background::pilar()
     glTranslatef(0,0,75);
 
     int height=50;
+    double pos[][2]={{1,1},{-1,1},{1,-1},{-1,-1}};
+
     glPushMatrix();{
         glTranslatef(bridgeWidth/2-upperPillarWidth/2,0,0);
         dbox(upperPillarWidth,pilarLength,height,0,0,whiteBrickId,1,1);
 
         glTranslatef(0,0,height);
-        upperPillar();
+        for (int i=0; i<4; i++)
+        {
+            glPushMatrix();{
+                glTranslatef((upperPillarWidth/2-upperSmallPillarWidth/2)*pos[i][0],(pilarLength/2-upperSmallPillarLength/2)*pos[i][1],0);
+                upperPillar();
+            }glPopMatrix();
+        }
     }glPopMatrix();
 
-    glPushMatrix();{
-        glTranslatef(-(bridgeWidth/2-upperPillarWidth/2),0,0);
-        dbox(upperPillarWidth,pilarLength,height,0,0,whiteBrickId,1,1);
+    //glTranslatef(0,0,2*height);
+    //dbox(bridgeWidth,pilarLength,20,0,0,whiteBrickId);
 
-        glTranslatef(0,0,height);
-        upperPillar();
-    }glPopMatrix();
 }
 
 void background::archDown()

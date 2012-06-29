@@ -22,6 +22,8 @@ public:
     double pilarLength;
     double plilarHeight;
     double upperPillarWidth;
+    double upperSmallPillarLength;
+    double upperSmallPillarWidth;
 
     string resourcePath;
 
