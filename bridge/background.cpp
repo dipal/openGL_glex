@@ -9,38 +9,130 @@ void background::init()
 {
     bridgeLength=600;
     roadLength=bridgeLength+400;
-    bridgeWidth=80;
+    bridgeWidth=150;
 
     pilarLength=60;
+    upperPillarWidth=bridgeWidth/2-30;
+    upperSmallPillarWidth = upperPillarWidth/2-10;
+    upperSmallPillarLength = pilarLength/2-10;
 
     glEnable(GL_COLOR_MATERIAL);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    resourcePath="./../resource/";
+
+    brickId = loadTexture(loadBMP((resourcePath+"brick5.bmp").c_str()));
+    whiteBrickId = loadTexture(loadBMP((resourcePath+"brick9.bmp").c_str()));
+    rockBrickId = loadTexture(loadBMP((resourcePath+"brick_texture_1.bmp").c_str()));
 
 }
 void background::animate(){}
 
 
 //error pron
-void background::dbox(double xWidth,double yWidth,double zWidth,double xWidthTop)
+void background::dbox(double xWidth,double yWidth,double zWidth,double xTopWidth,double yTopWidth, GLuint textureId,double xRepeat,double yRepeat)
 {
-    if (xWidthTop==0) xWidthTop=xWidth;
-    glPushMatrix();{
-        glScalef(xWidth,yWidth,zWidth);
-        glRotatef(45,0,0,1);
-        gluCylinder(gluNewQuadric(),1,xWidthTop/xWidth,1,4,4);
-    }glPopMatrix();
+    if (xTopWidth==0) xTopWidth=xWidth;
+    if (yTopWidth==0) yTopWidth=yWidth;
+
+    double xb=xWidth/2;
+    double yb=yWidth/2;
+    double zb=0;
+
+    double xt=xTopWidth/2;
+    double yt=yTopWidth/2;
+    double zt=zWidth;
+
+    point bottom1 = point(xb,-yb,zb);
+    point bottom2 = point(xb,yb,zb);
+    point bottom3 = point(-xb,yb,zb);
+    point bottom4 = point(-xb,-yb,zb);
+
+    point up1 = point(xt,-yt,zt);
+    point up2 = point(xt,yt,zt);
+    point up3 = point(-xt,yt,zt);
+    point up4 = point(-xt,-yt,zt);
+
+    Plane4Pt plane(bottom1,
+                   bottom2,
+                   up2,
+                   up1);
+    plane.draw(textureId,xRepeat,yRepeat);
+
+    plane = Plane4Pt(bottom2,
+                     bottom3,
+                     up3,
+                     up2);
+    plane.draw(textureId,xRepeat,yRepeat);
+
+    plane = Plane4Pt(bottom3,
+                     bottom4,
+                     up4,
+                     up3);
+    plane.draw(textureId,xRepeat,yRepeat);
+
+    plane = Plane4Pt(bottom4,
+                     bottom1,
+                     up1,
+                     up4);
+    plane.draw(textureId,xRepeat,yRepeat);
+
+    plane = Plane4Pt(bottom1,
+                     bottom2,
+                     bottom3,
+                     bottom4);
+    plane.draw(textureId,xRepeat,yRepeat);
+
+    plane = Plane4Pt(up1,
+                     up2,
+                     up3,
+                     up4);
+    plane.draw(textureId,xRepeat,yRepeat);
+}
+
+void background::upperPillar()
+{
+    dbox(upperSmallPillarWidth,upperSmallPillarLength,50,0,0,whiteBrickId,1,1);
+
 
 }
 
 void background::pilar()
 {
-    dbox(bridgeWidth/2+20,pilarLength/2+20,20,bridgeWidth/2);
-    glTranslatef(0,0,20);
-    dbox(bridgeWidth/2,pilarLength/2,20,bridgeWidth/2);
-    //dbox(bridgeWidth/2+20,pilarLength/2,20,bridgeWidth/2);
+    dbox(bridgeWidth+20,pilarLength+20,20,bridgeWidth,pilarLength,rockBrickId,3,1);
 
-    //glTranslatef(0,0,20);
-    //dbox(bridgeWidth/2,pilarLength/2,100,bridgeWidth/2);
+    glTranslatef(0,0,20);
+    dbox(bridgeWidth,pilarLength,5,bridgeWidth+5,pilarLength+5,rockBrickId,10,5);
+
+    glTranslatef(0,0,5);
+    dbox(bridgeWidth+5,pilarLength+5,5,bridgeWidth,pilarLength,rockBrickId,10,1);
+
+    glTranslatef(0,0,5);
+    dbox(bridgeWidth,pilarLength,75,0,0,brickId,2,2);
+
+
+    glTranslatef(0,0,75);
+
+    int height=50;
+    double pos[][2]={{1,1},{-1,1},{1,-1},{-1,-1}};
+
+    glPushMatrix();{
+        glTranslatef(bridgeWidth/2-upperPillarWidth/2,0,0);
+        dbox(upperPillarWidth,pilarLength,height,0,0,whiteBrickId,1,1);
+
+        glTranslatef(0,0,height);
+        for (int i=0; i<4; i++)
+        {
+            glPushMatrix();{
+                glTranslatef((upperPillarWidth/2-upperSmallPillarWidth/2)*pos[i][0],(pilarLength/2-upperSmallPillarLength/2)*pos[i][1],0);
+                upperPillar();
+            }glPopMatrix();
+        }
+    }glPopMatrix();
+
+    //glTranslatef(0,0,2*height);
+    //dbox(bridgeWidth,pilarLength,20,0,0,whiteBrickId);
+
 }
 
 void background::archDown()
@@ -181,38 +273,14 @@ void background::drawObjects()
 
 
     glPushMatrix();{
-//        GLuint textureId = loadTexture(loadBMP("brk.bmp"));
-
-//        glEnable(GL_TEXTURE_2D);
-//        glBindTexture(GL_TEXTURE_2D, textureId);
-
-//        //Bottom
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-//        glTranslatef(0,0,100);
-
-//        glBegin(GL_QUADS);{
-//            glNormal3f(0,0,1);
-//            glTexCoord2f(0.0f, 0.0f);
-//            glVertex3f(50,-100,-100);
-//            glTexCoord2f(10.0f, 0.0f);
-//            glVertex3f(50, 100,-100);
-//            glTexCoord2f(10.0f, 10.0f);
-//            glVertex3f(50, 100, 100);
-//            glTexCoord2f(0.0f, 10.0f);
-//            glVertex3f(50,-100, 100);
-//        }glEnd();
-
-//        glDisable(GL_TEXTURE_2D);
-
 
         glTranslatef(0,-100,100);
         Plane4Pt plane(point(50,-100,-100),
                        point(50, 100,-100),
                        point(50, 100, 100),
                        point(50,-100, 100));
-//        plane.draw(loadTexture(loadBMP("src/brick_texture_1.bmp")));
+
+        plane.draw(rockBrickId);
     }glPopMatrix();
 }
 
