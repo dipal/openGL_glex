@@ -36,9 +36,24 @@ void background::init()
     railTrackId = loadTexture(loadBMP((resourcePath+"railTrack.bmp").c_str()));
     rockRoadId = loadTexture(loadBMP((resourcePath+"rockRoad.bmp").c_str()));
     railTrackShinyId = loadTexture(loadBMP((resourcePath+"railTrackShiny.bmp").c_str()));
+    waterId = loadTexture(loadBMP((resourcePath+"w8.bmp").c_str()));
+
+    waterSurfaces.push_back(Plane4Pt(point(-1000,-1000,0),
+                                     point( 1000,-1000,0),
+                                     point( 1000, 1000,0),
+                                     point(-1000, 1000,0),
+                                     waterId,5,5));
+    waterSurfaces.push_back(Plane4Pt(point(-3000,-1000,0),
+                                     point(-1000,-1000,0),
+                                     point(-1000, 1000,0),
+                                     point(-3000, 1000,0),
+                                     waterId,5,5));
+
 
 }
-void background::animate(){}
+void background::animate(){
+    for (int i=0; i<waterSurfaces.size(); i++) waterSurfaces[i].forward(1000,4000);
+}
 
 
 //error pron
@@ -106,6 +121,13 @@ void background::dbox(double xWidth,double yWidth,double zWidth,double xTopWidth
 void background::upperPillarUpperPortion()
 {
     dbox(upperSmallPillarWidth,upperSmallPillarLength,upperSmallPillarHeight,0,0,whiteBrickId,1,1);
+
+    //double arcHeight=upperSmallPillarHeight-
+    //glTranslatef(upperSmallPillarLength/2,0,0);
+    glTranslatef(30,30,30);
+    //glRotatef(90,0,0,1);
+    ArcBrick((pilarLength-upperSmallPillarLength)/2,(pilarLength-upperSmallPillarLength)/2,10,5).draw();
+    //ArcBrick(10,100,10,5).draw();
 }
 
 void background::upperPillar(int side)
@@ -312,13 +334,7 @@ void background::drawPlane()
 {
     //plane
     //glColor3f(.2,.5,0);
-    glBegin(GL_QUADS);{
-        glNormal3f(0,0,1);
-        glVertex3f(-1000,-1000,0);
-        glVertex3f( 1000,-1000,0);
-        glVertex3f( 1000, 1000,0);
-        glVertex3f(-1000, 1000,0);
-    }glEnd();
+    for (int i=0; i<waterSurfaces.size(); i++) waterSurfaces[i].draw();
 
 }
 
@@ -368,6 +384,8 @@ void background::drawObjects()
         glTranslatef(0,0,100);
         road();
     }glPopMatrix();
+
+
 }
 
 void background::draw()

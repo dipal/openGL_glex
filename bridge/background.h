@@ -8,6 +8,7 @@
 #include "imageloader.h"
 #include "plane4pt.h"
 #include "string"
+#include "arcbrick.h"
 
 class background : public ShapeInterface
 {
@@ -50,6 +51,9 @@ public:
     GLuint railTrackId;
     GLuint rockRoadId;
     GLuint railTrackShinyId;
+    GLuint waterId;
+
+    vector<Plane4Pt> waterSurfaces;
 
     void drawPlane();
     void drawObjects();

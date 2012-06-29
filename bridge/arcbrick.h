@@ -19,7 +19,7 @@ class ArcBrick: public ShapeInterface {
 	double xRepeat, yRepeat;
 public:
 	ArcBrick(double xLen, double yLen, double zLen, int numSteps,
-			GLuint textureId, double xRepeat, double yRepeat);
+                        GLuint textureId=0, double xRepeat=1, double yRepeat=1);
 
 	void draw();
 };

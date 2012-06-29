@@ -29,20 +29,24 @@ void ArcBrick::draw() {
 	double step = M_PI_2 / numSteps;
 
 	double prex = -xLen, prez = 0;
-	for (double theta = M_PI_2 + step; theta >= 0; theta -= step) {
+        for (double theta = M_PI - step; theta >= M_PI_2; theta -= step) {
 		double x = xLen * cos(theta);
 		double z = zLen * sin(theta);
 
 		//front triangle
-		Plane4Pt(point(prex, 0, prez), point(x, 0, z), point(x, 0, z),
-				point(-xLen, 0, zLen), textureId, xRepeat, yRepeat).draw();
+                Plane4Pt(point(prex, 0, prez), point(x, 0, z), point(x, 0, z),
+                                point(-xLen, 0, zLen), textureId, xRepeat, yRepeat).draw();
 
 		//back triangle
-		Plane4Pt(point(prex, yLen, prez), point(x, yLen, z), point(x, yLen, z),
-				point(-xLen, yLen, zLen), textureId, xRepeat, yRepeat).draw();
+                Plane4Pt(point(prex, yLen, prez), point(x, yLen, z), point(x, yLen, z),
+                                point(-xLen, yLen, zLen), textureId, xRepeat, yRepeat).draw();
 
 		//down rectangle
 		Plane4Pt(point(prex, 0, prez), point(x, 0, z), point(x, yLen, z),
 				point(prex, yLen, prez), textureId, xRepeat, yRepeat).draw();
-	}
+
+
+                prex = x; prez = z;
+        }
+
 }
