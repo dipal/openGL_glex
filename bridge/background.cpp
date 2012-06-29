@@ -25,6 +25,8 @@ void background::init()
     upperSmallPillarHeight=50;
     pilarTopHeight=25;
 
+    highQlty=false;
+
     glEnable(GL_COLOR_MATERIAL);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -36,6 +38,7 @@ void background::init()
     railTrackId = loadTexture(loadBMP((resourcePath+"railTrack.bmp").c_str()));
     rockRoadId = loadTexture(loadBMP((resourcePath+"rockRoad.bmp").c_str()));
     railTrackShinyId = loadTexture(loadBMP((resourcePath+"railTrackShiny.bmp").c_str()));
+    wallId = loadTexture(loadBMP((resourcePath+"wall.bmp").c_str()));
     waterId = loadTexture(loadBMP((resourcePath+"w8.bmp").c_str()));
 
     waterSurfaces.push_back(Plane4Pt(point(-1000,-1000,0),
@@ -117,35 +120,55 @@ void background::dbox(double xWidth,double yWidth,double zWidth,double xTopWidth
                      textureId,xRepeat,yRepeat).draw();
 }
 
-void background::wall(double width,double height,double depth,GLuint textureId,double xRepeat,double yRepeat)
+void background::wall(double width, double height, double depth,int nstep,GLuint textureId,bool isDesigned, double xRepeat, double yRepeat)
 {
-    double s=width/3;
+
+    if (!isDesigned) {
+        dbox(depth,width,height,0,0,textureId,xRepeat,yRepeat);
+        return ;
+    }
+    double step=width/nstep;
+
+    //cout<<nstep<<" "<<step<<endl;
+    glPushMatrix();{
+        glTranslatef(0,-width/2+step/2,0);
+        for (int i=0; i<nstep; i++)
+        {
+            wallBrick(step,height,depth,textureId,xRepeat,yRepeat);
+            glTranslatef(0,step,0);
+        }
+    }glPopMatrix();
+}
+
+void background::wallBrick(double width,double height,double depth,GLuint textureId,double xRepeat,double yRepeat)
+{
+    double s=width/4;
     glPushMatrix();{
         glTranslatef(0,-width/2+s/2,0);
-        dbox(depth,s,height);
+        dbox(depth,s,height,0,0,textureId,xRepeat,yRepeat);
     }glPopMatrix();
 
     glPushMatrix();{
         glTranslatef(0,width/2-s/2,0);
-        dbox(depth,s,height);
+        dbox(depth,s,height,0,0,textureId,xRepeat,yRepeat);
     }glPopMatrix();
 
     glPushMatrix();{
-        glTranslatef(0,0,height-10);
-        dbox(depth,s,10);
+        glTranslatef(0,0,height-2);
+        dbox(depth,2*s,2,0,0,textureId,xRepeat,yRepeat);
     }glPopMatrix();
 
-    height-=10;
+    height-=2;
     glPushMatrix();{
         glTranslatef(depth/2,0,0);
         glRotatef(90,0,0,1);
-        ArcBrick(s/2,depth,height,5).draw();
+        ArcBrick(s,depth,height,5,textureId,xRepeat,yRepeat).draw();
     }glPopMatrix();
 
     glPushMatrix();{
         glTranslatef(-depth/2,0,0);
         glRotatef(-90,0,0,1);
-        ArcBrick(s/2,depth,height,5).draw();
+        ArcBrick(s,depth,height,5,textureId,xRepeat,yRepeat).draw();
     }glPopMatrix();
 }
 
@@ -203,20 +226,46 @@ void background::upperPillar(int side)
     glTranslatef(0,0,pilarTopHeight);
     glPushMatrix();{
         glTranslatef(0,-pilarLength/2,0);
-        dbox(upperPillarWidth+1,1,15);
+        if (highQlty) {
+            glRotatef(90,0,0,1);
+            wall(upperPillarWidth+1,20,1,3,wallId);
+        }
+        else {
+            dbox(upperPillarWidth+1,1,20,0,0,wallId);
+        }
     }glPopMatrix();
 
     glPushMatrix();{
         glTranslatef(0,pilarLength/2,0);
-        dbox(upperPillarWidth+1,1,15);
+        if (highQlty) {
+            glRotatef(90,0,0,1);
+            wall(upperPillarWidth+1,20,1,3,wallId);
+        } else {
+            dbox(upperPillarWidth+1,1,20,0,0,wallId);
+        }
     }glPopMatrix();
 
     glPushMatrix();{
         glTranslatef(side*(-upperPillarWidth/2),0,0);
-        dbox(1,pilarLength,15);
+        if (highQlty) {
+            wall(pilarLength+1,20,1,2,wallId);
+        } else {
+            glRotatef(90,0,0,1);
+            dbox(pilarLength+1,1,20,0,0,wallId);
+        }
     }glPopMatrix();
 
+    glPushMatrix();{
+        glTranslatef(-1*side*(-upperPillarWidth/2),pilarLength/2-5,0);
+        glRotatef(90,0,0,1);
+        dbox(10+1,1,20,0,0,wallId);
+    }glPopMatrix();
 
+    glPushMatrix();{
+        glTranslatef(-1*side*(-upperPillarWidth/2),-(pilarLength/2-5),0);
+        glRotatef(90,0,0,1);
+        dbox(10+1,1,20,0,0,wallId);
+    }glPopMatrix();
 }
 
 void background::pilar()
@@ -246,7 +295,28 @@ void background::pilar()
     }glPopMatrix();
 
     glTranslatef(0,0,upperPillarHeight+upperSmallPillarHeight);
-    dbox(bridgeWidth-2*upperPillarWidth,pilarLength,pilarTopHeight,0,0,whiteBrickId);
+    dbox(bridgeWidth-2*upperPillarWidth,pilarLength-10,pilarTopHeight,0,0,whiteBrickId);
+
+    glTranslatef(0,0,pilarTopHeight);
+    glPushMatrix();{
+        glTranslatef(0,pilarLength/2-10,0);
+        if (highQlty) {
+            glRotatef(90,0,0,1);
+            wall(bridgeWidth-2*upperPillarWidth,20,1,3,wallId);
+        } else {
+            dbox(bridgeWidth-2*upperPillarWidth,1,20,0,0,wallId);
+        }
+    }glPopMatrix();
+
+    glPushMatrix();{
+        glTranslatef(0,-pilarLength/2+10,0);
+        if (highQlty) {
+            glRotatef(90,0,0,1);
+            wall(bridgeWidth-2*upperPillarWidth,20,1,3,wallId);
+        } else {
+            dbox(bridgeWidth-2*upperPillarWidth,1,20,0,0,wallId);
+        }
+    }glPopMatrix();
 
 }
 
@@ -282,7 +352,6 @@ void background::archDown()
 
 void background::road()
 {
-    wall(100,50,20);
     double x;
     double y;
     double z;
@@ -487,6 +556,8 @@ void background::draw()
 
 
 
-void background::keyboardListener(unsigned char key, int x,int y){}
+void background::keyboardListener(unsigned char key){
+    if (key=='h') highQlty=!highQlty;
+}
 void background::specialKeyListener(int key, int x,int y){}
 void background::mouseListener(int button, int state, int x, int y){}

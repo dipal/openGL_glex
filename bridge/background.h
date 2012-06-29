@@ -42,7 +42,8 @@ public:
     void archDown();
     void road();
     void dbox(double xWidth,double yWidth,double zWidth,double xTopWidth=0,double yTopWidth=0,GLuint textureId=0,double xRepeat=1,double yRepeat=1);
-    void wall(double width,double height,double depth,GLuint textureId=0,double xRepeat=1,double yRepeat=1);
+    void wallBrick(double width,double height,double depth,GLuint textureId=0,double xRepeat=1,double yRepeat=1);
+    void wall(double width,double height,double depth,int nstep=1,GLuint textureId=0,bool isDesigned=1,double xRepeat=1,double yRepeat=1);
     void widthedTriangle(double xWidth,double yWidth,double zWidth,double xTopWidth=0,GLuint textureId=0,double xRepeat=1,double yRepeat=1);
 
     GLuint brickId;
@@ -52,7 +53,10 @@ public:
     GLuint railTrackId;
     GLuint rockRoadId;
     GLuint railTrackShinyId;
+    GLuint wallId;
     GLuint waterId;
+
+    bool highQlty;
 
     vector<Plane4Pt> waterSurfaces;
 
@@ -62,7 +66,7 @@ public:
     void init();
     void animate();
     void draw();
-    void keyboardListener(unsigned char key, int x,int y);
+    void keyboardListener(unsigned char key);
     void specialKeyListener(int key, int x,int y);
     void mouseListener(int button, int state, int x, int y);
 };

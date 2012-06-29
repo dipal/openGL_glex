@@ -12,7 +12,7 @@
 ArcBrick::ArcBrick(double xLen, double yLen, double zLen, int numSteps,
 		GLuint textureId, double xRepeat, double yRepeat) :
 		xLen(xLen), yLen(yLen), zLen(zLen), numSteps(numSteps), textureId(
-				textureId), xRepeat(xRepeat), yRepeat(yRepeat) {
+                                textureId), xRepeat(xRepeat), yRepeat(yRepeat) {
 }
 
 void ArcBrick::draw() {
@@ -28,10 +28,11 @@ void ArcBrick::draw() {
 
 	double step = M_PI_2 / numSteps;
 
-	double prex = -xLen, prez = 0;
+
+        double prex = -xLen, prez = 0;
         for (double theta = M_PI - step; theta >= M_PI_2; theta -= step) {
-		double x = xLen * cos(theta);
-		double z = zLen * sin(theta);
+                double x = xLen * cos(theta);
+                double z = zLen * sin(theta);
 
 		//front triangle
                 Plane4Pt(point(prex, 0, prez), point(x, 0, z), point(x, 0, z),
