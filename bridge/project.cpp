@@ -5,7 +5,7 @@ project::project()
 {
     ms(isPressed, 0);
 
-    shapes.addShape(new Viewer(Vector(200,-350,100), Vector(0,-350,100), Vector(0, 0, 1)));
+    shapes.addShape(new Viewer(Vector(200,-350,200), Vector(0,-350,200), Vector(0, 0, 1)));
     shapes.addShape(new background());
 }
 

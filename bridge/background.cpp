@@ -88,6 +88,15 @@ void background::dbox(double xWidth,double yWidth,double zWidth,double xTopWidth
     plane.draw(textureId,xRepeat,yRepeat);
 }
 
+void background::upperPillar()
+{
+    int height=50;
+
+
+
+
+}
+
 void background::pilar()
 {
     dbox(bridgeWidth+20,pilarLength+20,20,bridgeWidth,pilarLength,rockBrickId,3,1);
@@ -103,16 +112,22 @@ void background::pilar()
 
 
     glTranslatef(0,0,75);
-    int height=50;
 
+    int height=50;
     glPushMatrix();{
         glTranslatef(bridgeWidth/2-upperPillarWidth/2,0,0);
         dbox(upperPillarWidth,pilarLength,height,0,0,whiteBrickId,1,1);
+
+        glTranslatef(0,0,height);
+        upperPillar();
     }glPopMatrix();
 
     glPushMatrix();{
         glTranslatef(-(bridgeWidth/2-upperPillarWidth/2),0,0);
         dbox(upperPillarWidth,pilarLength,height,0,0,whiteBrickId,1,1);
+
+        glTranslatef(0,0,height);
+        upperPillar();
     }glPopMatrix();
 }
 

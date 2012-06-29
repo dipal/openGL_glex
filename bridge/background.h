@@ -26,6 +26,7 @@ public:
     string resourcePath;
 
     void pilar();
+    void upperPillar();
     void archUp();
     void archDown();
     void road();
