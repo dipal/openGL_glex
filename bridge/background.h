@@ -7,6 +7,7 @@
 #include "shapeinterface.h"
 #include "imageloader.h"
 #include "plane4pt.h"
+#include "string"
 
 class background : public ShapeInterface
 {
@@ -20,12 +21,21 @@ public:
     double bridgeWidth;
     double pilarLength;
     double plilarHeight;
+    double upperPillarWidth;
+
+    string resourcePath;
 
     void pilar();
     void archUp();
     void archDown();
     void road();
-    void dbox(double xWidth,double yWidth,double zWidth,double xWidthTop=0);
+    void dbox(double xWidth,double yWidth,double zWidth,double xTopWidth=0,double yTopWidth=0,GLuint textureId=0,double xRepeat=1,double yRepeat=1);
+
+
+    GLuint brickId;
+    GLuint rockBrickId;
+    GLuint redBrickId;
+    GLuint whiteBrickId;
 
     void drawPlane();
     void drawObjects();

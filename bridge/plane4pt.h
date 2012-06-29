@@ -19,7 +19,7 @@ public:
         vector<point> pts;
         Plane4Pt(point pt1, point pt2, point pt3, point pt4);
 
-        void draw(GLuint textureId);
+        void draw(GLuint textureId=0,double xRepeat=1,double yRepeat=1);
 };
 
 #endif /* PLANE4PT_H_ */
