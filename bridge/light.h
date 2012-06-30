@@ -16,6 +16,9 @@ public:
 	Light();
 	void init();
 	void draw();
+        void setDay();
+        void setNight();
+        void keyboardListener(unsigned char key);
 };
 
 #endif /* LIGHT_H_ */
