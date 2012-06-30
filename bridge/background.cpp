@@ -39,6 +39,7 @@ void background::init()
     rockRoadId = loadTexture(loadBMP((resourcePath+"rockRoad.bmp").c_str()));
     railTrackShinyId = loadTexture(loadBMP((resourcePath+"railTrackShiny.bmp").c_str()));
     wallId = loadTexture(loadBMP((resourcePath+"wall.bmp").c_str()));
+    ironId = loadTexture(loadBMP((resourcePath+"red.bmp").c_str()));
     waterId = loadTexture(loadBMP((resourcePath+"w8.bmp").c_str()));
 
     waterSurfaces.push_back(Plane4Pt(point(-1000,-1000,0),
@@ -60,7 +61,7 @@ void background::animate(){
 
 
 //error pron
-void background::dbox(double xWidth,double yWidth,double zWidth,double xTopWidth,double yTopWidth, GLuint textureId,double xRepeat,double yRepeat)
+void background::dbox(double xWidth,double yWidth,double zWidth,double xTopWidth,double yTopWidth, GLuint textureId,double xRepeat,double yRepeat,point upperTranslate)
 {
     if (xTopWidth==0) xTopWidth=xWidth;
     if (yTopWidth==0) yTopWidth=yWidth;
@@ -78,10 +79,10 @@ void background::dbox(double xWidth,double yWidth,double zWidth,double xTopWidth
     point bottom3 = point(-xb,yb,zb);
     point bottom4 = point(-xb,-yb,zb);
 
-    point up1 = point(xt,-yt,zt);
-    point up2 = point(xt,yt,zt);
-    point up3 = point(-xt,yt,zt);
-    point up4 = point(-xt,-yt,zt);
+    point up1 = point(xt,-yt,zt)+upperTranslate;
+    point up2 = point(xt,yt,zt)+upperTranslate;
+    point up3 = point(-xt,yt,zt)+upperTranslate;
+    point up4 = point(-xt,-yt,zt)+upperTranslate;
 
     Plane4Pt(bottom1,
                    bottom2,
@@ -380,11 +381,14 @@ void background::road()
                      point(-x,y,z),
                      rockRoadId,10,50);
     plane.draw();
-    glScalef(bridgeWidth/2,roadLength,10);
-    glutSolidCube(1);
+
+    glTranslatef(0,0,-5);
+    dbox(bridgeWidth/2,roadLength,10,0,0,ironId,20,1);
+    //glScalef(bridgeWidth/2,roadLength,10);
+    //glutSolidCube(1);
 }
 
-void background::arch(double height)
+void background::arch(double height,double depth)
 {
     double pi=M_PI;
     for (double step=-pi; step<=pi; step+=.05) {
@@ -392,11 +396,11 @@ void background::arch(double height)
             glTranslatef(0,step*50,height*cos(step));
             //glRotatef(-sin(step)*180/pi,1,0,0);
             //glutSolidCube(10);
-            double x1=5;
+            double x1=depth/2;
             double y1=step*50;
             double z1=height*cos(step);
 
-            double x2=-5;
+            double x2=-depth/2;
             double y2=(step+.1)*50;
             double z2=height*cos(step+.1);
 
@@ -404,18 +408,20 @@ void background::arch(double height)
             Plane4Pt planeUpDown = Plane4Pt(point(x1,y1,z1),
                                       point(x1,y2,z2),
                                       point(x2,y2,z2),
-                                      point(x2,y1,z1));
+                                      point(x2,y1,z1),
+                                            ironId);
             Plane4Pt planeLeftWrite = Plane4Pt (point(x1,y1,z1),
-                                                point(x1,y1,z1-10),
-                                                point(x1,y2,z2-10),
-                                                point(x1,y2,z2));
+                                                point(x1,y1,z1-depth),
+                                                point(x1,y2,z2-depth),
+                                                point(x1,y2,z2),
+                                                ironId);
             planeUpDown.draw();
             planeLeftWrite.draw();
 
-            glTranslatef(0,0,-10);
+            glTranslatef(0,0,-depth);
             planeUpDown.draw();
 
-            glTranslatef(-10,0,10);
+            glTranslatef(-depth,0,depth);
             planeLeftWrite.draw();
 
         }glPopMatrix();
@@ -426,21 +432,57 @@ void background::archDown()
 {
     bridgeRod();
     archRod();
-    arch(40);
+    arch(40,10);
 }
 
 void background::archUp()
 {
-    arch(30);
+    arch(30,7);
+}
+
+void background::archRodTopDown(double height,int sLimit,int eLimit)
+{
+    double pi=M_PI;
+    int i=0;
+    for (double step=-pi; step<=pi; step+=.3,i++) {
+        glPushMatrix();{
+            double cs=cos(step);
+            double csp=cos(step+.3);
+            glTranslatef(0,100*step,2*height*cs-5);
+
+            if (i>=sLimit && i<=eLimit) {
+                glRotatef(-90,0,1,0);
+                dbox(4,4,bridgeWidth/2,0,0,ironId,1,20);
+
+                int transDir=-1;
+                if (step<0) transDir=1;
+                dbox(4,4,bridgeWidth/2,0,0,ironId,1,20,point(transDir*2*height*(csp-cs)+transDir*2,transDir*100*0.3,0));
+
+                glTranslatef(0,0,bridgeWidth/2);
+                glScalef(1,1,-1);
+                dbox(4,4,bridgeWidth/2,0,0,ironId,1,20,point(transDir*2*height*(csp-cs)+transDir*2,transDir*100*0.3+1,0));
+
+            }
+
+        }glPopMatrix();
+    }
 }
 
 void background::archRod()
 {
     double pi=M_PI;
-    for (double step=-pi; step<=pi; step+=.3) {
+    int i=0;
+    for (double step=-pi; step<=pi; step+=.3,i++) {
         glPushMatrix();{
             glTranslatef(0,100*step,80*cos(step));
-            dbox(4,4,80+60*cos(step)-80*cos(step));
+            dbox(4,4,80+60*cos(step)-80*cos(step)-1,0,0,ironId,1,20);
+
+            if (i>=2 && i<=19) {
+                int transDir=-1;
+                if (step<0) transDir=1;
+                dbox(4,4,80+60*cos(step)-80*cos(step)-1,0,0,ironId,1,20,point(0,transDir*100*0.3,0));
+            }
+
         }glPopMatrix();
     }
 }
@@ -451,7 +493,9 @@ void background::bridgeRod()
     for (double step=-pi; step<=pi; step+=.1) {
         glPushMatrix();{
             glTranslatef(0,100*step,-15);
-            dbox(1,1,80*cos(step)+5);
+            double height=80*cos(step)+5;
+            if (height>0) dbox(1,1,height,0,0,ironId,1,20);
+
         }glPopMatrix();
     }
 }
@@ -503,6 +547,16 @@ void background::drawObjects()
     glPushMatrix();{
         glTranslatef(-bridgeWidth/4,0,200);
         archUp();
+    }glPopMatrix();
+
+    glPushMatrix();{
+        glTranslatef(bridgeWidth/4,0,200);
+        archRodTopDown(30,2,19);
+    }glPopMatrix();
+
+    glPushMatrix();{
+        glTranslatef(bridgeWidth/4,0,120);
+        archRodTopDown(40,7,14);
     }glPopMatrix();
 
     //road

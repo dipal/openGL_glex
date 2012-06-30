@@ -12,7 +12,7 @@ Plane4Pt::Plane4Pt(point pt1, point pt2, point pt3, point pt4, GLuint textureId,
 void Plane4Pt::forward(double xLimit,double xReset)
 {
     int i;
-    for (i=0; i<pts.size(); i++) pts[i]=pts[i]+point(2,0,0);
+    for (i=0; i<pts.size(); i++) pts[i]=pts[i]+point(4,0,0);
 
     if (xLimit==0) return ;
     if (pts[0].x>=xLimit) {
