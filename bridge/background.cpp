@@ -413,8 +413,29 @@ void background::road()
     glutSolidCube(1);
 }
 
+void archUpCube(int wide, int nStep) {
+
+	double step = M_PI / nStep;
+	double px = - wide / 2.0, pz = 0;
+	for (double theta = -M_PI_2 + step; theta <= M_PI_2; theta += step) {
+		double x = theta / M_PI * wide;
+		double z = cos(theta);
+		double rot = atan2(z - pz, x - px);
+		glPushMatrix();{
+			glRotated(rot * 180 / M_PI, 1, 0, 0);
+			glutSolidCube(sqrt(sqr(x-px)+sqr(z-pz)));
+		}glPopMatrix();
+		px = x; pz = z;
+//		cout << px << ' ' << pz << endl;
+	}
+//	exit(0);
+}
+
 void background::archUp()
 {
+	archUpCube(bridgeLength, 100);
+	return;
+
     double theta=0;
     double circleTheta=0;
     double pi=M_PI;
