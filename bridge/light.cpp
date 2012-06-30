@@ -7,81 +7,87 @@
 //============================================================================
 
 #include "light.h"
-#include <GL/gl.h>
+#include <memory.h>
+
 Light::Light() {
 	// TODO Auto-generated constructor stub
 }
 
+
+
 void Light::init() {
+    //setDay();
+    //return;
 	glEnable(GL_LIGHTING); //Enable lighting
-        glEnable(GL_LIGHT0); //Enable light #0
-	glEnable(GL_LIGHT1); //Enable light #1
+//        glEnable(GL_LIGHT0); //Enable light #0
+        glEnable(GL_LIGHT1); //Enable light #1
 
-	//    glTranslatef(0.0f, 0.0f, -8.0f);
+        setDay();
 
-	//Add ambient light
-	GLfloat ambientColor[] = { 0.2f, 0.2f, 0.2f, 1.0f }; //Color (0.2, 0.2, 0.2)
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+        memcpy(dayLightColor0, (GLfloat []){ 0.8f, 0.8f, 0.9f, 1.0f }, 4 * sizeof(GLfloat));
+        memcpy(dayLightColor1, (GLfloat []){ 0.4f, 0.4f, 1.0f, 1.0f }, 4 * sizeof(GLfloat));
+        memcpy(dayAmbColor, (GLfloat []){ 0.5f, 0.5f, 0.9f, 1.0f }, 4 * sizeof(GLfloat));
 
-	//Add positioned light
-        GLfloat lightColor0[] = { 2.0f, 2.0f, 2.0f, 1.0f }; //Color (0.5, 0.5, 0.5)
-	GLfloat lightPos0[] = { 4.0f, 0.0f, 8.0f, 1.0f }; //Positioned at (4, 0, 8)
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+        memcpy(nightLightColor0, (GLfloat []){ 0.1f, 0.1f, 0.1f, 1.0f }, 4 * sizeof(GLfloat));
+        memcpy(nightLightColor1, (GLfloat []){ 0.2f, 0.2f, 1.0f, 1.0f }, 4 * sizeof(GLfloat));
+        memcpy(nightAmbColor, (GLfloat []){ 0.2f, 0.2f, 0.2f, 1.0f }, 4 * sizeof(GLfloat));
 
-	//Add directed light
-        GLfloat lightColor1[] = { 0.2f, 0.2f, 1.0f, 1.0f }; //Color (0.5, 0.2, 0.2)
-        //Coming from the direction (-1, 0.5, 0.5)
-        GLfloat lightPos1[] = { -1.0f, 0.5f, 0.5f, 0.0f };
-        glLightfv(GL_LIGHT1, GL_DIFFUSE, lightColor1);
-        glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
 
-	//    //Add directed light
-	//    GLfloat lightColor2[] = {0.5f, 0.0f, 0.0f, 1.0f}; //Color (0.5, 0.2, 0.2)
-	//    //Coming from the direction (-1, 0.5, 0.5)
-	//    GLfloat lightPos2[] = {-1.0f, 0.5f, 0.5f, 0.0f};
-	//    glLightfv(GL_LIGHT1, GL_DIFFUSE, lightColor1);
-	//    glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
+        memcpy(lightColor0, nightLightColor0, 4 * sizeof(GLfloat));
+        memcpy(lightColor1, nightLightColor1, 4 * sizeof(GLfloat));
+        memcpy(ambColor, nightAmbColor, 4 * sizeof(GLfloat));
+
+        nStep = 50;
+        nowStep = 0;
+        sign = 1;
+
 }
 
+#include <iostream>
+        using namespace std;
+
 void Light::draw() {
+    for(int i = 0; i < 4; i++) {
+        double lc0change = (dayLightColor0[i] - nightLightColor0[i]) / nStep;
+        lightColor0[i] += lc0change * sign;
+
+        double lc1change = (dayLightColor1[i] - nightLightColor1[i]) / nStep;
+        lightColor1[i] += lc1change * sign;
+
+        double ambchange = (dayAmbColor[i] - nightAmbColor[i]) / nStep;
+        ambColor[i] += ambchange * sign;
+
+        //        cout << lightColor0[i] << "  ";
+    }
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambColor);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, lightColor1);
+
+//    cout << "DSF " << endl;
+
+    nowStep += sign;
+    if(nowStep < 0 || nowStep > nStep) sign *= -1;
+
+    glClearColor(.7 * nowStep / double(nStep), .7 * nowStep / double(nStep), nowStep / double(nStep), 1);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
 }
 
 void Light::setDay() {
-    GLfloat ambientColor[] = { 0.2f, 0.2f, 0.2f, 1.0f }; //Color (0.2, 0.2, 0.2)
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
-
-    //Add positioned light
-    GLfloat lightColor0[] = { 2.0f, 2.0f, 2.0f, 1.0f }; //Color (0.5, 0.5, 0.5)
-    GLfloat lightPos0[] = { 4.0f, 0.0f, 8.0f, 1.0f }; //Positioned at (4, 0, 8)
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
+    GLfloat lightPos0[] = { 4.0f, 0.0f, 400.0f, 1.0f }; //Positioned at (4, 0, 8)
     glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
 
-    //Add directed light
-    GLfloat lightColor1[] = { 0.2f, 0.2f, 1.0f, 1.0f }; //Color (0.5, 0.2, 0.2)
-    //Coming from the direction (-1, 0.5, 0.5)
-    GLfloat lightPos1[] = { -1.0f, 0.5f, 0.5f, 0.0f };
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, lightColor1);
+    GLfloat lightPos1[] = { -100.0f, 900.f, 900.5f, 0.0f };
     glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
-
 }
 
 void Light::setNight()
 {
-    GLfloat ambientColor[] = { 0.2f, 0.2f, 0.2f, 1.0f }; //Color (0.2, 0.2, 0.2)
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
-
-    //Add positioned light
-    GLfloat lightColor0[] = { 2.0f, 2.0f, 2.0f, 1.0f }; //Color (0.5, 0.5, 0.5)
-    GLfloat lightPos0[] = { 4.0f, 0.0f, 8.0f, 1.0f }; //Positioned at (4, 0, 8)
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
+    GLfloat lightPos0[] = { 4.0f, 0.0f, 400.0f, 1.0f }; //Positioned at (4, 0, 8)
     glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
 
-    //Add directed light
-    GLfloat lightColor1[] = { 0.2f, 0.2f, 1.0f, 1.0f }; //Color (0.5, 0.2, 0.2)
-    //Coming from the direction (-1, 0.5, 0.5)
     GLfloat lightPos1[] = { -1.0f, 0.5f, 0.5f, 0.0f };
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, lightColor1);
     glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
 }
 

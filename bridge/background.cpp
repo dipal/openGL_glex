@@ -41,6 +41,11 @@ void background::init()
     wallId = loadTexture(loadBMP((resourcePath+"wall.bmp").c_str()));
     ironId = loadTexture(loadBMP((resourcePath+"red.bmp").c_str()));
     waterId = loadTexture(loadBMP((resourcePath+"w8.bmp").c_str()));
+    skyFrontId = loadTexture(loadBMP((resourcePath+"front.bmp").c_str()));
+    skyBackId = loadTexture(loadBMP((resourcePath+"back.bmp").c_str()));
+    skyLeftId = loadTexture(loadBMP((resourcePath+"left.bmp").c_str()));
+    skyRightId = loadTexture(loadBMP((resourcePath+"right.bmp").c_str()));
+    skyTopId = loadTexture(loadBMP((resourcePath+"top.bmp").c_str()));
 
     waterSurfaces.push_back(Plane4Pt(point(-1000,-1000,0),
                                      point( 1000,-1000,0),
@@ -505,6 +510,30 @@ void background::drawPlane()
     //plane
     //glColor3f(.2,.5,0);
     for (int i=0; i<waterSurfaces.size(); i++) waterSurfaces[i].draw();
+
+    Plane4Pt(point(-1000,-1000,0),
+             point(-1000,1000,0),
+             point(-1000,1000,1000),
+             point(-1000,-1000,1000),
+             skyBackId).draw();
+
+    Plane4Pt(point( 1000,-1000,0),
+             point( 1000,1000,0),
+             point( 1000,1000,1000),
+             point(  1000,-1000,1000),
+             skyFrontId).draw();
+
+    Plane4Pt(point( 1000,-1000,0),
+             point(-1000,-1000,0),
+             point(-1000,-1000,1000),
+             point( 1000,-1000,1000),
+             skyLeftId).draw();
+
+    Plane4Pt(point( 1000, 1000,0),
+             point(-1000, 1000,0),
+             point(-1000, 1000,1000),
+             point( 1000, 1000,1000),
+             skyRightId).draw();
 
 }
 

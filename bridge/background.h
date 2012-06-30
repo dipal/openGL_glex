@@ -60,6 +60,11 @@ public:
     GLuint wallId;
     GLuint ironId;
     GLuint waterId;
+    GLuint skyFrontId;
+    GLuint skyBackId;
+    GLuint skyLeftId;
+    GLuint skyRightId;
+    GLuint skyTopId;
 
     bool highQlty;
 
