@@ -13,7 +13,7 @@ void background::init()
 
     bridgeLength=600;
     roadLength=bridgeLength+400;
-    bridgeWidth=150;
+    bridgeWidth=180;
     roadWidth=bridgeWidth/2;
 
     pilarLength=60;
@@ -320,35 +320,6 @@ void background::pilar()
 
 }
 
-void background::archDown()
-{
-    //glRotatef(90,0,1,0);
-    //glutSolidTorus(5,350,100,100);
-    double theta=0;
-    double circleTheta=0;
-    double pi=M_PI;
-
-
-    glScalef(1,125,5.5);
-
-
-    {
-        for (circleTheta=0; circleTheta<=2.0*pi; circleTheta+=0.05) {
-            //glVertex3f(10*cos(circleTheta),0,1/3.0*sin(circleTheta));
-            glPushMatrix();{
-                glTranslatef(5.0*cos(circleTheta),0,5*1/5.5*sin(circleTheta));
-                glBegin(GL_LINE_STRIP); {
-                    for (theta=-pi/1.2; theta<=pi/1.2; theta+=0.05) {
-                        glNormal3f(1,0,0);
-                        glVertex3f(0,theta,20*cos(theta));
-                    }
-                }
-                glEnd();
-            }glPopMatrix();
-        }
-    }
-
-}
 
 void background::road()
 {
@@ -413,65 +384,77 @@ void background::road()
     glutSolidCube(1);
 }
 
-void archUpCube(int wide, int nStep) {
+void background::arch(double height)
+{
+    double pi=M_PI;
+    for (double step=-pi; step<=pi; step+=.05) {
+        glPushMatrix();{
+            glTranslatef(0,step*50,height*cos(step));
+            //glRotatef(-sin(step)*180/pi,1,0,0);
+            //glutSolidCube(10);
+            double x1=5;
+            double y1=step*50;
+            double z1=height*cos(step);
 
-	double step = M_PI / nStep;
-	double px = - wide / 2.0, pz = 0;
-	for (double theta = -M_PI_2 + step; theta <= M_PI_2; theta += step) {
-		double x = theta / M_PI * wide;
-		double z = cos(theta);
-		double rot = atan2(z - pz, x - px);
-		glPushMatrix();{
-			glRotated(rot * 180 / M_PI, 1, 0, 0);
-			glutSolidCube(sqrt(sqr(x-px)+sqr(z-pz)));
-		}glPopMatrix();
-		px = x; pz = z;
-//		cout << px << ' ' << pz << endl;
-	}
-//	exit(0);
+            double x2=-5;
+            double y2=(step+.1)*50;
+            double z2=height*cos(step+.1);
+
+
+            Plane4Pt planeUpDown = Plane4Pt(point(x1,y1,z1),
+                                      point(x1,y2,z2),
+                                      point(x2,y2,z2),
+                                      point(x2,y1,z1));
+            Plane4Pt planeLeftWrite = Plane4Pt (point(x1,y1,z1),
+                                                point(x1,y1,z1-10),
+                                                point(x1,y2,z2-10),
+                                                point(x1,y2,z2));
+            planeUpDown.draw();
+            planeLeftWrite.draw();
+
+            glTranslatef(0,0,-10);
+            planeUpDown.draw();
+
+            glTranslatef(-10,0,10);
+            planeLeftWrite.draw();
+
+        }glPopMatrix();
+    }
+}
+
+void background::archDown()
+{
+    bridgeRod();
+    archRod();
+    arch(40);
 }
 
 void background::archUp()
 {
-	archUpCube(bridgeLength, 100);
-	return;
-
-    double theta=0;
-    double circleTheta=0;
-    double pi=M_PI;
-
-
-    glScalef(1,100,3);
-
-    {
-        for (circleTheta=0; circleTheta<=2.0*pi; circleTheta+=0.05) {
-            //glVertex3f(10*cos(circleTheta),0,1/3.0*sin(circleTheta));
-            glPushMatrix();{
-                glTranslatef(5.0*cos(circleTheta),0,5*1/3.0*sin(circleTheta));
-                glBegin(GL_LINE_STRIP); {
-                    for (theta=-pi; theta<=pi; theta+=0.05) {
-//                        double numc=M_2_PI/0.05;
-//                        double numt=M_2_PI/0.05;
-//                        double s=circleTheta;
-//                        double t=theta;
-//                        double x = cos(t*M_2_PI/numt) * cos(s*M_2_PI/numc);
-//                        double z = sin(t*M_2_PI/numt) * cos(s*M_2_PI/numc);
-//                        double y = sin(s*M_2_PI/numc);
-//                        glPushMatrix();{
-//                            glScalef(1,1,1);
-//                            glNormal3f(x,y,z);
-//                        }glPopMatrix();
-                        glNormal3f(1,0,0);
-                        glVertex3f(0,theta,20*cos(theta));
-                    }
-                }
-                glEnd();
-            }glPopMatrix();
-        }
-    }
-
+    arch(30);
 }
 
+void background::archRod()
+{
+    double pi=M_PI;
+    for (double step=-pi; step<=pi; step+=.3) {
+        glPushMatrix();{
+            glTranslatef(0,100*step,80*cos(step));
+            dbox(4,4,80+60*cos(step)-80*cos(step));
+        }glPopMatrix();
+    }
+}
+
+void background::bridgeRod()
+{
+    double pi=M_PI;
+    for (double step=-pi; step<=pi; step+=.1) {
+        glPushMatrix();{
+            glTranslatef(0,100*step,-15);
+            dbox(1,1,80*cos(step)+5);
+        }glPopMatrix();
+    }
+}
 
 void background::drawPlane()
 {
@@ -500,13 +483,13 @@ void background::drawObjects()
     glPushMatrix();{
         //glTranslatef(20,0,-300);
         //archDown();
-        glTranslatef(bridgeWidth/4,0,80);
+        glTranslatef(bridgeWidth/4,0,120);
         archDown();
     }glPopMatrix();
 
     //arch down side2
     glPushMatrix();{
-        glTranslatef(-bridgeWidth/4,0,80);
+        glTranslatef(-bridgeWidth/4,0,120);
         archDown();
     }glPopMatrix();
 
@@ -582,3 +565,147 @@ void background::keyboardListener(unsigned char key){
 }
 void background::specialKeyListener(int key, int x,int y){}
 void background::mouseListener(int button, int state, int x, int y){}
+
+
+
+//void background::archDown()
+//{
+//    //glRotatef(90,0,1,0);
+//    //glutSolidTorus(5,350,100,100);
+//    double theta=0;
+//    double circleTheta=0;
+//    double pi=M_PI;
+
+//    glPushMatrix();{
+//        glTranslatef(0,0,120);
+//        for (double step=-pi; step<=pi; step+=.05) {
+//            glPushMatrix();{
+//                glTranslatef(0,step*50,30*cos(step));
+//                //glRotatef(-sin(step)*180/pi,1,0,0);
+//                //glutSolidCube(10);
+//                double x1=5;
+//                double y1=step*50;
+//                double z1=30*cos(step);
+
+//                double x2=-5;
+//                double y2=(step+.1)*50;
+//                double z2=30*cos(step+.1);
+
+
+//                Plane4Pt planeUpDown = Plane4Pt(point(x1,y1,z1),
+//                                          point(x1,y2,z2),
+//                                          point(x2,y2,z2),
+//                                          point(x2,y1,z1));
+//                Plane4Pt planeLeftWrite = Plane4Pt (point(x1,y1,z1),
+//                                                    point(x1,y1,z1-10),
+//                                                    point(x1,y2,z2-10),
+//                                                    point(x1,y2,z2));
+//                planeUpDown.draw();
+//                planeLeftWrite.draw();
+
+//                glTranslatef(0,0,-10);
+//                planeUpDown.draw();
+
+//                glTranslatef(-10,0,10);
+//                planeLeftWrite.draw();
+
+//            }glPopMatrix();
+//        }
+//    }glPopMatrix();
+
+
+//    glPushMatrix();{
+//        glTranslatef(0,0,20);
+//        for (double step=-pi; step<=pi; step+=.05) {
+//            glPushMatrix();{
+//                glTranslatef(0,step*50,50*cos(step));
+//                //glRotatef(-sin(step)*180/pi,1,0,0);
+//                //glutSolidCube(10);
+//                double x1=5;
+//                double y1=step*50;
+//                double z1=50*cos(step);
+
+//                double x2=-5;
+//                double y2=(step+.1)*50;
+//                double z2=50*cos(step+.1);
+
+
+//                Plane4Pt planeUpDown = Plane4Pt(point(x1,y1,z1),
+//                                          point(x1,y2,z2),
+//                                          point(x2,y2,z2),
+//                                          point(x2,y1,z1));
+//                Plane4Pt planeLeftWrite = Plane4Pt (point(x1,y1,z1),
+//                                                    point(x1,y1,z1-10),
+//                                                    point(x1,y2,z2-10),
+//                                                    point(x1,y2,z2));
+//                planeUpDown.draw();
+//                planeLeftWrite.draw();
+
+//                glTranslatef(0,0,-10);
+//                planeUpDown.draw();
+
+//                glTranslatef(-10,0,10);
+//                planeLeftWrite.draw();
+
+//            }glPopMatrix();
+//        }
+//    }glPopMatrix();
+//    glScalef(1,125,5.5);
+
+
+//    {
+//        for (circleTheta=0; circleTheta<=2.0*pi; circleTheta+=0.05) {
+//            //glVertex3f(10*cos(circleTheta),0,1/3.0*sin(circleTheta));
+//            glPushMatrix();{
+//                glTranslatef(5.0*cos(circleTheta),0,5*1/5.5*sin(circleTheta));
+//                glBegin(GL_LINE_STRIP); {
+//                    for (theta=-pi/1.2; theta<=pi/1.2; theta+=0.05) {
+//                        glNormal3f(1,0,0);
+//                        glVertex3f(0,theta,20*cos(theta));
+//                    }
+//                }
+//                glEnd();
+//            }glPopMatrix();
+//        }
+//    }
+
+//}
+
+
+//void background::archUp()
+//{
+//    double theta=0;
+//    double circleTheta=0;
+//    double pi=M_PI;
+
+
+//    glScalef(1,100,3);
+
+//    {
+//        for (circleTheta=0; circleTheta<=2.0*pi; circleTheta+=0.05) {
+//            //glVertex3f(10*cos(circleTheta),0,1/3.0*sin(circleTheta));
+//            glPushMatrix();{
+//                glTranslatef(5.0*cos(circleTheta),0,5*1/3.0*sin(circleTheta));
+//                glBegin(GL_LINE_STRIP); {
+//                    for (theta=-pi; theta<=pi; theta+=0.05) {
+////                        double numc=M_2_PI/0.05;
+////                        double numt=M_2_PI/0.05;
+////                        double s=circleTheta;
+////                        double t=theta;
+////                        double x = cos(t*M_2_PI/numt) * cos(s*M_2_PI/numc);
+////                        double z = sin(t*M_2_PI/numt) * cos(s*M_2_PI/numc);
+////                        double y = sin(s*M_2_PI/numc);
+////                        glPushMatrix();{
+////                            glScalef(1,1,1);
+////                            glNormal3f(x,y,z);
+////                        }glPopMatrix();
+//                        glNormal3f(1,0,0);
+//                        glVertex3f(0,theta,20*cos(theta));
+//                    }
+//                }
+//                glEnd();
+//            }glPopMatrix();
+//        }
+//    }
+
+//}
