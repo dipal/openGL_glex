@@ -511,29 +511,29 @@ void background::drawPlane()
     //glColor3f(.2,.5,0);
     for (int i=0; i<waterSurfaces.size(); i++) waterSurfaces[i].draw();
 
-    Plane4Pt(point(-1000,-1000,0),
-             point(-1000,1000,0),
-             point(-1000,1000,1000),
-             point(-1000,-1000,1000),
-             skyBackId).draw();
+//    Plane4Pt(point(-1000,-1000,0),
+//             point(-1000,1000,0),
+//             point(-1000,1000,1000),
+//             point(-1000,-1000,1000),
+//             skyBackId).draw();
 
-    Plane4Pt(point( 1000,-1000,0),
-             point( 1000,1000,0),
-             point( 1000,1000,1000),
-             point(  1000,-1000,1000),
-             skyFrontId).draw();
+//    Plane4Pt(point( 1000,-1000,0),
+//             point( 1000,1000,0),
+//             point( 1000,1000,1000),
+//             point(  1000,-1000,1000),
+//             skyFrontId).draw();
 
-    Plane4Pt(point( 1000,-1000,0),
-             point(-1000,-1000,0),
-             point(-1000,-1000,1000),
-             point( 1000,-1000,1000),
-             skyLeftId).draw();
+//    Plane4Pt(point( 1000,-1000,0),
+//             point(-1000,-1000,0),
+//             point(-1000,-1000,1000),
+//             point( 1000,-1000,1000),
+//             skyLeftId).draw();
 
-    Plane4Pt(point( 1000, 1000,0),
-             point(-1000, 1000,0),
-             point(-1000, 1000,1000),
-             point( 1000, 1000,1000),
-             skyRightId).draw();
+//    Plane4Pt(point( 1000, 1000,0),
+//             point(-1000, 1000,0),
+//             point(-1000, 1000,1000),
+//             point( 1000, 1000,1000),
+//             skyRightId).draw();
 
 }
 
