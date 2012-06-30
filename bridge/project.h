@@ -10,6 +10,7 @@
 #include "multishape.h"
 
 #include "background.h"
+#include "light.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ class project
 public:
     project();
 
-    //background bg;
+    Light light;
     MultiShape shapes;
 
     bool isPressed[256];
