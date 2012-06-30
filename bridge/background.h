@@ -38,6 +38,9 @@ public:
     void pilar();
     void upperPillar(int side);
     void upperPillarUpperPortion(int i);
+    void arch(double height=30);
+    void bridgeRod();
+    void archRod();
     void archUp();
     void archDown();
     void road();
